@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rayhan Ali Rachman — Portfolio</title>
+<style>
+  :root {
+    --bg: #fafafa;
+    --text: #1a1a1a;
+    --muted: #666;
+    --accent: #2b5aed;
+    --border: #e5e5e5;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 80px 24px 40px;
+  }
+  h1 {
+    font-size: 2rem;
+    margin: 0 0 8px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 1.1rem;
+    margin: 0 0 24px;
+  }
+  .bio {
+    font-size: 1rem;
+    max-width: 640px;
+  }
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+  section {
+    margin-bottom: 48px;
+  }
+  h2 {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+  }
+  .project {
+    display: block;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+  }
+  .project:last-child {
+    border-bottom: none;
+  }
+  .project-title {
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .project-desc {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-top: 4px;
+  }
+  .contact a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  footer {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Rayhan Ali Rachman</h1>
+  <p class="subtitle">Economics &amp; Finance</p>
+  <p class="bio">
+    Welcome — this is my portfolio site. I work on economics and finance topics,
+    including quantitative modeling. Bio coming soon.
+  </p>
+</header>
+
+<main>
+  <section>
+    <h2>Projects</h2>
+    <a class="project" href="Solow model simple.html">
+      <div class="project-title">Solow Growth Model</div>
+      <div class="project-desc">An interactive analysis of the Solow growth model, built with R and Plotly.</div>
+    </a>
+  </section>
+
+  <section>
+    <h2>Contact</h2>
+    <p class="contact">
+      Email: <a href="mailto:rayhanalirachman@gmail.com">rayhanalirachman@gmail.com</a><br />
+      GitHub: <a href="https://github.com/rayhanalirachman">github.com/rayhanalirachman</a>
+    </p>
+  </section>
+</main>
+
+<footer>
+  &copy; 2026 Rayhan Ali Rachman
+</footer>
+
+</body>
+</html>
