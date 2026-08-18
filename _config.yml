@@ -1,0 +1,30 @@
+title: Rayhan Ali Rachman
+description: >-
+  Applied development researcher — Economics & Public Policy.
+  Research interests in regional development, Islamic finance, and sustainability policy.
+url: "https://rayhanalirachman.github.io"
+author: Rayhan Ali Rachman
+email: rayhanalirachman@gmail.com
+github_username: rayhanalirachman
+
+markdown: kramdown
+kramdown:
+  input: GFM
+
+nav:
+  - title: Home
+    url: /
+  - title: About Me
+    url: /about-me/
+  - title: Research
+    url: /research/
+  - title: Projects
+    url: /projects/
+
+plugins:
+  - jekyll-seo-tag
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{{ page.title }} — {{ site.title }}</title>
+<meta name="description" content="{{ site.description }}" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+
+<nav class="top-nav">
+  <div class="nav-container">
+    <h1 class="nav-title"><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
+    <ul class="nav-menu">
+      {% for item in site.nav %}
+      <li><a href="{{ item.url | relative_url }}"{% if page.url == item.url %} class="active"{% endif %}>{{ item.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</nav>
+
+<div class="wrapper">
+  <aside class="sidebar">
+    <div class="avatar">RA</div>
+
+    <h3>Contact</h3>
+    <p><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+    <p>+62 821-4085-9631</p>
+
+    <h3>GitHub</h3>
+    <p><a href="https://github.com/{{ site.github_username }}">{{ site.github_username }}</a></p>
+
+    <h3>CV</h3>
+    <a class="cv-btn" href="{{ '/CV_Rayhan_Ali_Rachman.pdf' | relative_url }}" target="_blank" rel="noopener">Download CV</a>
+  </aside>
+
+  <main>
+    {{ content }}
+  </main>
+</div>
+
+<footer class="site-footer">
+  &copy; {{ site.time | date: '%Y' }} {{ site.author }}
+</footer>
+
+</body>
+</html>
