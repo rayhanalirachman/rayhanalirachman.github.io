@@ -16,9 +16,9 @@ nav:
     url: /
   - title: About Me
     url: /about-me/
-  - title: Commissioned Projects
+  - title: Projects
     url: /research/
-  - title: Personal Projects
+  - title: Sandbox
     url: /projects/
 
 plugins:

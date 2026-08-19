@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Commissioned Projects
+title: Projects
 permalink: /research/
 ---
 

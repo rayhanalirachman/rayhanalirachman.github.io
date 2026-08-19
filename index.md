@@ -19,8 +19,8 @@ I am particularly interested in turning complex socioeconomic data into practica
 ## Pages
 
 - [About Me](/about-me/)
-- [Commissioned Projects](/research/)
-- [Personal Projects](/projects/)
+- [Projects](/research/)
+- [Sandbox](/projects/)
 
 </section>
 
