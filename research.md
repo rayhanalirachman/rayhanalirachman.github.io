@@ -25,7 +25,6 @@ permalink: /research/
     <li>Analyzed socioeconomic, demographic, and budget data to assess regional development trajectories across key sectors</li>
     <li>Identified unachieved development targets and diagnosed root causes through structured analytical frameworks and FGDs with regional stakeholders</li>
     <li>Formulated policy recommendations and long-term goal orientation based on data analysis and feasibility assessment</li>
-    <li>Enacted as a Regional Regulation (Peraturan Daerah) by the East Kutai Regency Government, ratified 26 November 2024</li>
   </ul>
 </div>
 
@@ -47,6 +46,34 @@ permalink: /research/
     <li>Examined firm-level performance metrics and asset data to benchmark Indonesia's Islamic finance sector against its potential</li>
     <li>Contributed to a policy report, policy brief, and public discussion forum on strategic recommendations for Islamic finance development in Indonesia</li>
   </ul>
+</div>
+
+</section>
+
+<section markdown="1">
+
+## Policy Impact
+
+<div class="impact-row" markdown="1">
+  <div>
+    <div class="impact-title">Long-Term Regional Development Plan, East Kutai Regency</div>
+    <div class="impact-meta">Ratified 26 November 2024</div>
+  </div>
+</div>
+
+<div class="impact-row" markdown="1">
+  <div>
+    <div class="impact-title">Long-Term Regional Development Plan, Depok City</div>
+    <div class="impact-meta">Peraturan Daerah Kota Depok Nomor 12 Tahun 2024</div>
+  </div>
+</div>
+
+<div class="impact-row" markdown="1">
+  <div>
+    <div class="impact-title">Medium-Term Regional Development Plan, Pematang Siantar City</div>
+    <div class="impact-meta">Peraturan Daerah Kota Pematangsiantar Nomor 2 Tahun 2025</div>
+  </div>
+  <a href="https://jdih.pematangsiantar.go.id/common/dokumen/2025LD12272.pdf" class="impact-link" target="_blank" rel="noopener">View regulation</a>
 </div>
 
 </section>
@@ -83,7 +110,6 @@ permalink: /research/
 <div class="entry" markdown="1">
   <div class="entry-title">Development of the 2025&ndash;2029 Medium-Term Regional Development Plan, Pematang Siantar City</div>
   <div class="entry-meta">Pematang Siantar City Government &middot; Mar&ndash;Jun 2025</div>
-  <p>Enacted as Peraturan Daerah Kota Pematangsiantar Nomor 2 Tahun 2025.</p>
 </div>
 
 <div class="entry" markdown="1">
@@ -129,7 +155,6 @@ permalink: /research/
 <div class="entry" markdown="1">
   <div class="entry-title">Preparation of Depok City Long-Term Regional Development Plan 2025&ndash;2045</div>
   <div class="entry-meta">Depok City Government &middot; Jan&ndash;Jun 2024</div>
-  <p>Enacted as Peraturan Daerah Kota Depok Nomor 12 Tahun 2024.</p>
 </div>
 
 <div class="entry" markdown="1">
