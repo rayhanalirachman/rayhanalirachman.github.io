@@ -168,6 +168,7 @@ footer.site-footer {
 @media screen and (max-width: 780px) {
   .wrapper { flex-direction: column; padding: 32px 18px 18px; gap: 32px; }
   aside.sidebar { width: 100%; flex: none; position: static; }
+  .avatar { margin-left: auto; margin-right: auto; }
   main { max-width: 100%; }
   .nav-container { flex-direction: column; align-items: flex-start; gap: 4px; }
 }
