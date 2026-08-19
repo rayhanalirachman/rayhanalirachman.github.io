@@ -25,6 +25,7 @@ permalink: /research/
     <li>Analyzed socioeconomic, demographic, and budget data to assess regional development trajectories across key sectors</li>
     <li>Identified unachieved development targets and diagnosed root causes through structured analytical frameworks and FGDs with regional stakeholders</li>
     <li>Formulated policy recommendations and long-term goal orientation based on data analysis and feasibility assessment</li>
+    <li>Enacted as a Regional Regulation (Peraturan Daerah) by the East Kutai Regency Government, ratified 26 November 2024</li>
   </ul>
 </div>
 
