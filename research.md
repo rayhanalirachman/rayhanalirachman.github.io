@@ -50,3 +50,101 @@ permalink: /research/
 </div>
 
 </section>
+
+<section markdown="1">
+
+## Other Research Projects
+
+<div class="entry" markdown="1">
+  <div class="entry-title">Study on the Hajj and Umrah Ecosystem</div>
+  <div class="entry-meta">BPKH &middot; Dec 2025</div>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">Strategic Plan for the Office of Population Control and Family Planning</div>
+  <div class="entry-meta">East Kutai Regency Government &middot; Sep&ndash;Nov 2025</div>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">Gold Investment Study</div>
+  <div class="entry-meta">BPKH &middot; Sep&ndash;Nov 2025</div>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">Identification of Transmigration Area Potential in East Kutai Regency</div>
+  <div class="entry-meta">East Kutai Regency Government &middot; Aug&ndash;Nov 2025</div>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">Roadmap for Sharia-Based Tapera Program</div>
+  <div class="entry-meta">BP Tapera &middot; Jul&ndash;Sep 2025</div>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">Development of the 2025&ndash;2029 Medium-Term Regional Development Plan, Pematang Siantar City</div>
+  <div class="entry-meta">Pematang Siantar City Government &middot; Mar&ndash;Jun 2025</div>
+  <p>Enacted as Peraturan Daerah Kota Pematangsiantar Nomor 2 Tahun 2025.</p>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">Evaluation of the 2024 Regional Government Work Plan of East Kutai Regency</div>
+  <div class="entry-meta">East Kutai Regency Government &middot; Feb&ndash;Mar 2025</div>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">Study on Investment Risk Exposure Identification and Measurement and BPKH Return Risk</div>
+  <div class="entry-meta">BPKH &middot; Sep&ndash;Dec 2024</div>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">FGD on KNEKS Islamic Economic Macro Indicators &ndash; IO Table Update (RAS Method)</div>
+  <div class="entry-meta">KNEKS &middot; Nov 2024</div>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">Development of Grand Design for Development Control, Evaluation and Reporting</div>
+  <div class="entry-meta">East Kutai Regency Cabinet Secretariat &middot; Sep&ndash;Dec 2024</div>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">Study on Jakarta Islamic Economy and Finance Development Roadmap</div>
+  <div class="entry-meta">DKI Jakarta Provincial Government &middot; Aug&ndash;Nov 2024</div>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">Technocratic Draft for Tanjung Balai City Medium-Term Regional Development Plan 2025&ndash;2029</div>
+  <div class="entry-meta">Tanjung Balai City Government &middot; Jul&ndash;Aug 2024</div>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">Technocratic Draft for Depok City Medium-Term Regional Development Plan 2025&ndash;2029</div>
+  <div class="entry-meta">Depok City Government &middot; Jun&ndash;Sep 2024</div>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">BSI Mobile Churn Rate Study</div>
+  <div class="entry-meta">Bank Syariah Indonesia &middot; Mar&ndash;Jul 2024</div>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">Preparation of Depok City Long-Term Regional Development Plan 2025&ndash;2045</div>
+  <div class="entry-meta">Depok City Government &middot; Jan&ndash;Jun 2024</div>
+  <p>Enacted as Peraturan Daerah Kota Depok Nomor 12 Tahun 2024.</p>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">Study on Hajj Financial Sustainability in BPKH Placement at BPS BPIH</div>
+  <div class="entry-meta">BPKH &middot; Oct 2023&ndash;Feb 2024</div>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">Depok City Macro Indicators Study</div>
+  <div class="entry-meta">Depok City Government &middot; Jun&ndash;Dec 2023</div>
+</div>
+
+<div class="entry" markdown="1">
+  <div class="entry-title">BAZNAS Human Resources Study</div>
+  <div class="entry-meta">BAZNAS &middot; Jun&ndash;Sep 2023</div>
+</div>
+
+</section>

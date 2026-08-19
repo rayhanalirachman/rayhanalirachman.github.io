@@ -133,6 +133,8 @@ main h2 {
 .entry-title { font-weight: 700; color: var(--heading); }
 .entry-meta { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
 .entry ul { font-size: 14px; padding-left: 20px; }
+.entry p { font-size: 14px; margin: 0; }
+.entry:not(:has(ul)) .entry-meta { margin-bottom: 0; }
 
 footer.site-footer {
   max-width: 1100px;
