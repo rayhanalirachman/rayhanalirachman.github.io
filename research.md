@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Research
+title: Commissioned Projects
 permalink: /research/
 ---
 
@@ -57,7 +57,7 @@ permalink: /research/
 <div class="impact-row" markdown="1">
   <div>
     <div class="impact-title">Long-Term Regional Development Plan, East Kutai Regency</div>
-    <div class="impact-meta">Ratified 26 November 2024</div>
+    <div class="impact-meta">Peraturan Daerah Kabupaten Kutai Timur Nomor 7 Tahun 2024</div>
   </div>
 </div>
 

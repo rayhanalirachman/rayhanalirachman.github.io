@@ -124,8 +124,8 @@ main h2 {
   border-bottom: 1px solid var(--border);
 }
 .project:last-child { border-bottom: none; }
-.project-title { font-weight: 700; color: var(--heading); }
-.project:hover .project-title { color: var(--link); }
+.project-title { display: block; font-weight: 700; color: var(--heading); text-decoration: none; }
+.project-title:hover { color: var(--link); }
 .project-desc { color: var(--muted); font-size: 14px; margin-top: 4px; }
 
 .entry { margin-bottom: 26px; }
