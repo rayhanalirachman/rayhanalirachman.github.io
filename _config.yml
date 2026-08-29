@@ -17,9 +17,9 @@ nav:
   - title: About Me
     url: /about-me/
   - title: Projects
-    url: /research/
-  - title: Sandbox
     url: /projects/
+  - title: Sandbox
+    url: /sandbox/
 
 plugins:
   - jekyll-seo-tag
