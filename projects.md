@@ -52,7 +52,7 @@ permalink: /projects/
 
 <section markdown="1">
 
-## Policy Impact
+## Direct Policy Impact Involvment
 
 <div class="impact-row" markdown="1">
   <div>
@@ -73,7 +73,6 @@ permalink: /projects/
     <div class="impact-title">Medium-Term Regional Development Plan, Pematang Siantar City</div>
     <div class="impact-meta">Peraturan Daerah Kota Pematangsiantar Nomor 2 Tahun 2025</div>
   </div>
-  <a href="https://jdih.pematangsiantar.go.id/common/dokumen/2025LD12272.pdf" class="impact-link" target="_blank" rel="noopener">View regulation</a>
 </div>
 
 </section>
