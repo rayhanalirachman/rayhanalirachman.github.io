@@ -1,0 +1,339 @@
+---
+title: "Simulating Market with Agent-Based Model"
+author: Rayhan Ali
+format : 
+  revealjs:
+    fontsize: 18pt
+    footer: "simulating market with ABM"
+    include-in-header:
+      text: |
+        <style>
+        .reveal h2 {
+          border-bottom: 2px solid #051C2C;
+          padding-bottom: 0.15em;
+          margin-bottom: 0.5em;
+        }
+        </style>
+execute:
+  echo: true
+---
+
+## Setting up
+:::: {.columns}
+
+::: {.column width="50%"}
+Hello, this is a simulation of a market with buyer and seller within agent-based model that utilise my own package, tidyABM
+
+tidyABM is a ABM package in R that utilise tidy principle. It use similar grammar decision as netlogo, it has 3 main components:
+
+- setting up the agents
+- what happen at each period
+- running the simulation
+
+It based on primer video about that exact thing that you can see here:
+
+[Youtube](https://youtu.be/PNtKXWNKGN8?si=KQebB8FgdtKe-Kl5)
+:::
+
+::: {.column width="50%"}
+First we need to install and load the necessary package, we will use tidyverse and tidyABM
+
+```{r}
+pak::pak("rayhanalirachman/tidyABM")
+library(tidyABM)
+library(tidyverse)
+```
+
+:::
+
+::::
+
+## Defining the agent
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+To start, we will use a pretty simple example, with 1 seller and 2 buyer
+
+Each agent will have: 
+
+- Price limit they are willing to accept or pay (i.e. WTA for seller and WTP for buyer)
+- Expected price to simulate what the agent expect the price should be, this will be adaptive depending on wether they succesfully trade or not
+- And 2 other variable, transacted and deal_price which the information wether the trade is succesfull or not be stored there, and the agreed price
+
+:::
+
+::: {.column width="50%"}
+
+Setting it up is pretty straightforward, how many agent there is (n) and  what variable will each agent needed to have
+
+in this case, we will have 1 seller and 1 buyer
+
+```{r}
+market <- abm_setup(
+  agents = list(
+    seller = abm_agents(
+      n = 1,
+      limit_price = 20,
+      expected_price = 30,
+      transacted = FALSE,
+      deal_price = NA_real_
+    ),
+    buyer = abm_agents(
+      n = 2,
+      limit_price = c(55, 60),
+      expected_price = c(40,45),
+      transacted = FALSE,
+      deal_price = NA_real_
+    )
+  )
+)
+```
+
+:::
+
+::::
+
+
+
+## Setting up what happen at each period (tick)
+
+:::: {.columns}
+
+::: {.column width="30%"}
+To set what happen at each tick, we declare what happen in a descending order, much like a story
+:::
+
+::: {.column width="70%"}
+
+```{r}
+go <- abm_go(
+  # First we set at the beginning that there is no transaction
+  abm_rules(transacted ~ FALSE, deal_price ~ NA_real_), 
+
+  # Then we match the buyer and seller randomly
+  abm_match(pair = "opposite_group", by = .group),
+
+  # Then simulating the trade
+  abm_rules(
+    # Transaction only occur if:                                 
+    transacted ~ case_when(
+      .group == "seller" & partner_expected_price >= expected_price ~ TRUE,
+      .group == "buyer"  & expected_price >= partner_expected_price ~ TRUE,
+      TRUE ~ FALSE),
+    # And the deal price is the middle price of both parties expected price
+    deal_price ~ if_else(
+      (.group == "seller" & partner_expected_price >= expected_price) |
+      (.group == "buyer"  & expected_price >= partner_expected_price),
+      (expected_price + partner_expected_price) / 2, NA_real_)),
+
+  # Each agent then update their expected price, given wether they 
+  # succesfully trade or not
+  abm_rules(                            
+    expected_price ~ case_when(
+      .group == "seller" &  transacted ~ expected_price + 1,
+      .group == "seller" & !transacted ~ pmax(expected_price - 1, limit_price),
+      .group == "buyer"  &  transacted ~ expected_price - 1,
+      .group == "buyer"  & !transacted ~ pmin(expected_price + 1, limit_price),
+      TRUE ~ expected_price),
+    .scope = "population")
+)
+```
+
+:::
+
+::::
+
+## Then run the simulation
+To run the simulation, we use abm_run() function with inputting the setup (in this case market), what happen at each tick (go) and how many periods will the model run.
+```{r}
+result <- abm_run(market, go, ticks = 200, seed = 123) # Using seed for reproducibility
+```
+
+The results is in a tibble, which can easily analysed using dplyr. 
+
+```{r}
+result |> slice_head(n = 5)
+result |> slice_tail(n = 5)
+```
+
+As you can see, the column match with what we describe at the setup
+
+## Analysing the simulation
+
+:::: {.columns}
+
+::: {.column width="40%"}
+
+We can analyse the data with ggplot. For example, we want to see how will the agreed price evolve overtime. 
+
+With only 1 seller and 2 buyer, the buyer expected price will always increase, as there will always be 1 buyer that doesnt transact (which in turn raised its expected price).
+
+```{r}
+result |> 
+  filter(.group == "buyer") |> 
+  count(transacted)
+```
+
+Thus, price increase.
+
+
+:::
+
+::: {.column width="60%"}
+
+```{r}
+result |> 
+  filter(.group == "buyer") |>
+  ggplot(aes(x = tick, y = deal_price)) +
+  geom_smooth(method = "loess", se = FALSE, color = "red", size = 0.5) +
+  geom_point(shape = 21, fill = NA, color = "black", alpha = 0.5, stroke = 0.8, size = 1.5) +
+  labs(
+    title = "Deal Price Across Simulation Ticks",
+    x = "Simulation Tick",
+    y = "Deal Price",) +
+  theme_minimal() +
+  theme(plot.title.position = "plot", 
+    plot.title = element_text(face = "bold", size = 13))
+```
+
+:::
+
+::: {.callout-note}
+This also show when there is more demand (buyer) than supply (seller), price will increase.
+:::
+
+::::
+
+## What happens if 2 seller and 1 buyer?
+
+:::: {.columns}
+
+::: {.column width="40%"}
+
+lets now see what happen when there is more seller, as the package is using 2 main blocks, we can just swap the block that need to be changed.
+
+```{r}
+market2 <- abm_setup(
+  agents = list(
+    seller = abm_agents(
+      n = 2,
+      limit_price = c(20, 25),
+      expected_price = c(30, 36),
+      transacted = FALSE,
+      deal_price = NA_real_),
+    buyer = abm_agents(
+      n = 1,
+      limit_price = 60,
+      expected_price = 45,
+      transacted = FALSE,
+      deal_price = NA_real_)))
+```
+
+Then we run it again.
+
+```{r}
+result2 <- abm_run(market2, go, ticks = 200, seed = 123) 
+```
+
+:::
+
+::: {.column width="60%"}
+
+The plotting code is similar to before, so i will not show it again.
+
+As we would expect, while there is more seller (supply) then buyer (demand), the price will decrease.
+
+```{r}
+#| echo = FALSE
+
+result2 |> 
+  filter(.group == "buyer") |>
+  ggplot(aes(x = tick, y = deal_price)) +
+  geom_smooth(method = "loess", se = FALSE, color = "red", size = 0.5) +
+  geom_point(shape = 21, fill = NA, color = "black", alpha = 0.5, stroke = 0.8, size = 1.5) +
+  labs(
+    title = "Deal Price Across Simulation Ticks",
+    x = "Simulation Tick",
+    y = "Deal Price",) +
+  theme_minimal() +
+  theme(plot.title.position = "plot", 
+    plot.title = element_text(face = "bold", size = 13))
+```
+
+:::
+
+::::
+
+
+
+## Equal amount many buyer and seller with many agents
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+Lets up the game now, lets use 50 buyer and 50 seller. But rather than we specify the limit_price and expected_price one by one, we will use a function to specify it
+
+```{r}
+market3 <- abm_setup(
+  agents = list(
+    seller = abm_agents(
+      n = 50,
+      limit_price = ~rlnorm(n, log(30), 0.5),
+      expected_price = ~rlnorm(n, log(30), 0.7),
+      transacted = FALSE,
+      deal_price = NA_real_),
+    buyer = abm_agents(
+      n = 50,
+      limit_price = ~rlnorm(n, log(30), 0.5),
+      expected_price = ~rlnorm(n, log(30), 0.7),
+      transacted = FALSE,
+      deal_price = NA_real_)))
+```
+
+Then we run it again.
+
+```{r}
+result3 <- abm_run(market3, go, ticks = 200, seed = 5) 
+```
+
+:::
+
+::: {.column width="50%"}
+
+We will only show the mean deal_price and the standard error to show variability. 
+
+As we can see, there are huge variation in the early tick, but overtime, it almost merge to a single price. This is the price mechanism.
+
+```{r}
+#| echo = FALSE
+
+result3 |>
+  filter(.group == "buyer", !is.na(deal_price)) |>
+  dplyr::summarize(
+    mean = mean(deal_price),
+    se = sd(deal_price) / sqrt(n()),
+    .by = tick
+  ) |> 
+  ggplot(aes(x = tick, y = mean)) +
+    geom_ribbon(aes(ymin = mean - se, ymax = mean + se), fill = "red", alpha = 0.15) +
+    geom_line(color = "red", linewidth = 0.5) +
+    labs(
+    title = "Deal Price Across Simulation Ticks",
+    x = "Simulation Tick",
+    y = "Deal Price") +
+    theme_minimal() +
+    theme(
+      plot.title.position = "plot", 
+      plot.title = element_text(face = "bold", size = 13))
+```
+
+:::
+
+::::
+
+
+
+
