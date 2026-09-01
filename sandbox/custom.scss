@@ -1,0 +1,313 @@
+/*-- scss:defaults --*/
+
+// Editorial — monochrome consulting theme for reveal.js
+// Playfair Display headlines over a Work Sans body, black / grey / white only.
+// Authored to a 1280 x 720 (16:9) canvas — set  width: 1280 / height: 720  in YAML
+// so every pixel below maps 1:1 to the design.
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Work+Sans:wght@400;500;600&display=swap');
+
+// --- Palette -----------------------------------------------------------
+$black:       #0f0f0f;
+$ink:         #1a1a1a;
+$grey:        #707070;
+$grey-mid:    #5a5a5a;
+$grey-light:  #9a9a9a;
+$rule:        #cfcfcf;
+$panel:       #f2f2f2;
+$panel-edge:  #e2e2e2;
+$paper:       #ffffff;
+
+// --- Typography ------------------------------------------------------
+$font-family-sans-serif: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !default;
+$presentation-heading-font: "Playfair Display", Georgia, "Times New Roman", serif !default;
+$presentation-heading-font-weight: 700 !default;
+$presentation-heading-line-height: 1.15 !default;
+
+// Body / prose / code text size is controlled from YAML:  fontsize: 24pt
+// (Quarto's default is 40px if you remove that line.)
+
+// Cover + action-title sizes are fixed to the 1280x720 design and do NOT
+// scale with fontsize. Change them here if you need to.
+$presentation-h1-font-size: 82px !default;   // cover headline
+$presentation-h2-font-size: 36px !default;   // content-slide action title
+$presentation-h3-font-size: 24px !default;
+
+// --- Base ------------------------------------------------------------
+$body-bg: $paper !default;
+$body-color: $ink !default;
+$presentation-heading-color: $black !default;
+
+// --- Links ---------------------------------------------------------
+$link-color: $black !default;
+$link-color-hover: $grey !default;
+
+// Code blocks are left at Quarto's defaults (original font, colours, layout).
+
+// --- Selection --------------------------------------------------
+$selection-bg: #dcdcdc !default;
+$selection-color: $black !default;
+
+// --- Callouts (flatten to greyscale) --------------------------
+$callout-color-note:      $black !default;
+$callout-color-tip:       $grey !default;
+$callout-color-important:  $black !default;
+$callout-color-caution:   $grey !default;
+$callout-color-warning:    $grey !default;
+
+
+/*-- scss:rules --*/
+
+.reveal {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+// ---- Quick knobs ----------------------------------------------------
+// Slide content inset. Design margins are 56 / 64 px; top is pulled to 44px
+// so the kicker + action title sit a little higher.
+$content-pad-top:  35px !default;
+$content-pad-side: 64px !default;
+// Line spacing for body text and bullets (1.7 = airy, 1.4 = tight).
+$body-line-height: 1.15 !default;
+
+.reveal .slides > section,
+.reveal .slides > section > section {
+  padding: #{$content-pad-top} #{$content-pad-side} 0;
+  box-sizing: border-box;
+}
+
+// --- Headings ----------------------------------------------------
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4 {
+  font-family: $presentation-heading-font;
+  color: #{$black};
+}
+
+// Action title + full-width rule (content slide) — exact design values
+.reveal h2 {
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-wrap: pretty;
+  max-width: 1040px;
+  margin: 0 0 32px;
+  padding-bottom: 22px;
+  border-bottom: 3px solid #{$black};
+}
+
+.reveal h3 { font-weight: 600; font-size: 24px; }
+
+// Slide kicker — the "Finding 02" label from the design.
+// Put  [Finding 02]{.kicker}  on its own line just above a `##` heading.
+.reveal .kicker {
+  display: block;
+  text-align: left;
+  font-family: "Work Sans", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #{$grey-light};
+  margin: 0 0 14px;
+}
+.reveal .slides p:has(> .kicker) { margin: 0 0 14px; }
+.reveal .slides p:has(> .kicker) + h2 { margin-top: 0; }
+
+// --- Title slide (Editorial cover, driven by title-slide.html) --------
+// YAML fields: kicker, issue, page-marker, prepared-for, author / author-label,
+//              status, date / date-label, institute / institute-label, subtitle, tagline
+#title-slide.editorial-title {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 720px;
+  padding: 0 !important;
+  text-align: left;
+}
+.reveal .slides > section#title-slide.center { top: 0 !important; }
+
+.editorial-title .et-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 64px;
+  border-bottom: 1px solid #{$rule};
+  font-family: "Work Sans", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #{$grey};
+}
+
+.editorial-title .et-main {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+}
+
+.editorial-title .et-headline {
+  flex: 2;
+  padding: 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.editorial-title .et-headline .title {
+  font-family: $presentation-heading-font;
+  font-weight: 700;
+  font-size: 82px;
+  line-height: 1.04;
+  letter-spacing: -0.005em;
+  color: #{$black};
+  margin: 0;
+}
+.editorial-title .et-headline .subtitle {
+  font-family: $presentation-heading-font;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 1.2;
+  color: #{$grey};
+  margin: 18px 0 0;
+}
+
+.editorial-title .et-meta {
+  flex: 1;
+  border-left: 1px solid #{$rule};
+  padding: 64px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  font-family: "Work Sans", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #{$grey-mid};
+}
+.editorial-title .et-field { display: flex; flex-direction: column; }
+.editorial-title .et-label {
+  font-family: "Work Sans", sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #{$grey-light};
+  margin-bottom: 6px;
+}
+
+.editorial-title .et-tagline {
+  padding: 20px 64px;
+  border-top: 3px solid #{$black};
+  font-family: $presentation-heading-font;
+  font-style: italic;
+  font-size: 18px;
+  color: #{$grey};
+}
+
+// no running footer / slide number on the cover
+.reveal:has(#title-slide.present) .footer,
+.reveal:has(#title-slide.present) .slide-number { display: none !important; }
+
+// --- Footer + slide number (content slides) — exact design values ----
+.reveal .footer,
+.reveal .footer.footer-default {
+  font-family: "Work Sans", sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #{$grey-light};
+  border-top: 1px solid #{$black};
+  padding-top: 12px;
+  left: 64px !important;
+  right: 64px !important;
+  width: auto !important;
+  bottom: 48px;
+  text-align: left !important;
+}
+.reveal .footer p { margin: 0; }
+
+.reveal .slide-number {
+  font-family: "Work Sans", sans-serif !important;
+  font-weight: 500;
+  font-size: 11px !important;
+  letter-spacing: 0.14em;
+  background-color: transparent !important;
+  color: #{$grey-light} !important;
+  right: 64px !important;
+  bottom: 48px !important;
+  padding: 0 !important;
+}
+.reveal .slide-number a { color: #{$grey-light} !important; }
+
+// --- Body copy -------------------------------------------------
+.reveal p,
+.reveal li { line-height: #{$body-line-height}; }
+
+.reveal strong { font-weight: 600; color: #{$black}; }
+.reveal em { color: inherit; }
+
+.reveal a {
+  text-decoration: none;
+  border-bottom: 1px solid #{$rule};
+}
+.reveal a:hover { border-bottom-color: #{$black}; }
+
+// Square monochrome bullets (unordered lists only)
+.reveal .slides ul { list-style: none; margin-left: 0; }
+.reveal .slides ul li {
+  position: relative;
+  padding-left: 1.1em;
+}
+.reveal .slides ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 6px;
+  height: 6px;
+  background: #{$black};
+}
+.reveal .slides ul ul li::before { background: #{$grey}; }
+
+// --- Columns -----------------------------------------------------
+.reveal .columns { gap: 2.2em; }
+
+// --- Code ------------------------------------------------------
+// Intentionally not themed — code blocks keep Quarto's original
+// monospace font, syntax colours, background and spacing.
+
+// --- Callouts (monochrome) ---------------------------------
+.reveal .callout {
+  border-left: 3px solid #{$black} !important;
+  background: #{$panel};
+}
+.reveal .callout .callout-title,
+.reveal .callout .callout-header {
+  background: #e6e6e6 !important;
+  color: #{$black};
+}
+.reveal .callout .callout-icon,
+.reveal .callout .callout-title-container { color: #{$black}; filter: grayscale(1); }
+
+// --- Tables --------------------------------------------------
+.reveal table { font-size: 0.8em; }
+.reveal table thead th {
+  border-bottom: 2px solid #{$black};
+  font-family: "Work Sans", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.9em;
+  font-weight: 600;
+}
+.reveal table td,
+.reveal table th { border-color: #{$panel-edge}; }
+
+// --- Progress bar ------------------------------------------
+.reveal .progress { color: #{$black}; height: 2px; }
+.reveal .progress span { background: #{$black}; }

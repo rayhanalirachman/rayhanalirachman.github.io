@@ -101,7 +101,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="market-abm_files/libs/revealjs/dist/theme/quarto-d2cfaf4017ec6d6e95d384acfb7920a7.css">
+  <link rel="stylesheet" href="market-abm_files/libs/revealjs/dist/theme/quarto-01a2fb03f8fcc000473b0b1d4d5b7206.css">
   <link href="market-abm_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="market-abm_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="market-abm_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -193,29 +193,35 @@
       margin-right: 0; 
     }
   </style>
-  <style>
-  .reveal h2 {
-    border-bottom: 2px solid #051C2C;
-    padding-bottom: 0.15em;
-    margin-bottom: 0.5em;
-  }
-  </style>
 </head>
 <body class="quarto-light">
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Simulating Market with Agent-Based Model</h1>
+<section id="title-slide" class="quarto-title-block editorial-title center">
 
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Rayhan Ali
-</div>
-</div>
-</div>
+  <div class="et-topbar">
+    <span>Projects</span>
+    <span>Q3 2026</span>
+    <span>01</span>
+  </div>
 
+  <div class="et-main">
+
+    <div class="et-headline">
+      <h1 class="title">Simulating Market with Agent-Based Model</h1>
+          </div>
+
+    <div class="et-meta">
+            <div class="et-field"><span class="et-label">Prepared for</span>Public</div>
+                  <div class="et-field"><span class="et-label">Author</span>Rayhan Ali</div>
+                        <div class="et-field"><span class="et-label">Status</span>Draft</div>
+                </div>
+
+  </div>
+
+    <div class="et-tagline">Simulating a market of buyers and sellers with an agent-based model</div>
+  
 </section>
 <section id="setting-up" class="slide level2">
 <h2>Setting up</h2>
@@ -368,6 +374,19 @@ Rayhan Ali
 </div>
 </div>
 <p>Thus, price increase.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>This also show when there is more demand (buyer) than supply (seller), price will increase.</p>
+</div>
+</div>
+</div>
 </div><div class="column" style="width:60%;">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-label="1"></a>result <span class="sc">|&gt;</span> </span>
@@ -390,20 +409,7 @@ Rayhan Ali
 </div>
 </div>
 </div>
-</div><div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Note</strong></p>
-</div>
-<div class="callout-content">
-<p>This also show when there is more demand (buyer) than supply (seller), price will increase.</p>
-</div>
-</div>
-</div>
-</div>
+</div></div>
 </section>
 <section id="what-happens-if-2-seller-and-1-buyer" class="slide level2">
 <h2>What happens if 2 seller and 1 buyer?</h2>
@@ -540,7 +546,7 @@ Rayhan Ali
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: 'c',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
@@ -665,12 +671,12 @@ Rayhan Ali
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1280,
 
-        height: 700,
+        height: 720,
 
         // Factor of the display size that should remain empty around the content
-        margin: 0.1,
+        margin: 4.0e-2,
 
         math: {
           mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',

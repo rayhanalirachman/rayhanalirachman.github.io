@@ -1,27 +1,19 @@
 ---
 title: "Simulating Market with Agent-Based Model"
 author: Rayhan Ali
-
-# --- Editorial title-slide fields (all optional; delete any you don't want) ---
-kicker: "Projects"          # top-left label
-issue: "Q3 2026"               # top-centre label
-page-marker: "01"              # top-right label
-prepared-for: "Public"         # right-hand metadata column
-status: "Draft"
-author-label: "Author"         # heading for the author row
-tagline: "Simulating a market of buyers and sellers with an agent-based model"
-
-format:
+format : 
   revealjs:
-    theme: [default, custom.scss]
-    template-partials:
-      - title-slide.html
-    width: 1280            # 16:9, PowerPoint-style canvas
-    height: 720
-    margin: 0.04
-    fontsize: 16pt
+    fontsize: 18pt
     footer: "simulating market with ABM"
-    slide-number: "c"
+    include-in-header:
+      text: |
+        <style>
+        .reveal h2 {
+          border-bottom: 2px solid #051C2C;
+          padding-bottom: 0.15em;
+          margin-bottom: 0.5em;
+        }
+        </style>
 execute:
   echo: true
 ---
@@ -186,9 +178,6 @@ result |>
 
 Thus, price increase.
 
-::: {.callout-note}
-This also show when there is more demand (buyer) than supply (seller), price will increase.
-:::
 
 :::
 
@@ -209,6 +198,10 @@ result |>
     plot.title = element_text(face = "bold", size = 13))
 ```
 
+:::
+
+::: {.callout-note}
+This also show when there is more demand (buyer) than supply (seller), price will increase.
 :::
 
 ::::

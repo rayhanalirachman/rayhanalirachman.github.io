@@ -1,0 +1,42 @@
+<section id="title-slide" class="quarto-title-block editorial-title">
+
+  <div class="et-topbar">
+    <span>$if(kicker)$$kicker$$else$Perspective$endif$</span>
+    <span>$if(issue)$$issue$$endif$</span>
+    <span>$if(page-marker)$$page-marker$$else$01$endif$</span>
+  </div>
+
+  <div class="et-main">
+
+    <div class="et-headline">
+      <h1 class="title">$title$</h1>
+      $if(subtitle)$
+      <p class="subtitle">$subtitle$</p>
+      $endif$
+    </div>
+
+    <div class="et-meta">
+      $if(prepared-for)$
+      <div class="et-field"><span class="et-label">Prepared for</span>$prepared-for$</div>
+      $endif$
+      $if(author)$
+      <div class="et-field"><span class="et-label">$if(author-label)$$author-label$$else$Authors$endif$</span>$for(author)$$author$$sep$, $endfor$</div>
+      $endif$
+      $if(institute)$
+      <div class="et-field"><span class="et-label">$if(institute-label)$$institute-label$$else$Affiliation$endif$</span>$for(institute)$$institute$$sep$, $endfor$</div>
+      $endif$
+      $if(status)$
+      <div class="et-field"><span class="et-label">Status</span>$status$</div>
+      $endif$
+      $if(date)$
+      <div class="et-field"><span class="et-label">$if(date-label)$$date-label$$else$Date$endif$</span>$date$</div>
+      $endif$
+    </div>
+
+  </div>
+
+  $if(tagline)$
+  <div class="et-tagline">$tagline$</div>
+  $endif$
+
+</section>
