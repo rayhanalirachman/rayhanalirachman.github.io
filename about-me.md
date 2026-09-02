@@ -8,8 +8,12 @@ permalink: /about-me/
 
 ## About Me
 
-I am an applied development researcher with over two years of experience delivering policy-focused analysis for government and international clients, such as GIZ and the British Embassy Jakarta. I have strong quantitative skills in data analysis, machine learning, and AI-assisted workflows using Python and R, and a track record of turning complex socioeconomic data into practical policy recommendations.
+I am an applied development researcher with almost three years of experience, working on policy analysis for government bodies and international organisations like GIZ and the British Embassy in Jakarta.
 
-I am currently studying a Master of Environmental and Resource Economics at the ANU Crawford School of Public Policy. My background covers regional development planning, Islamic finance, and sustainability policy, with experience from more than 15 commissioned research projects.
+I have contributed to 3 different regional development plans (20- and 5-year development plans) that have been formalised through government regulations and adopted by city and regency governments.
+
+With 20+ commissioned projects, I have used both qualitative (e.g., field surveys, stakeholder interviews, reviewing institutional and regulatory materials, etc.) and quantitative methods (e.g., survey instrument design and analysis, financial modelling in R, large-scale text analysis using R, etc.). For each project, I help design the analytical framework using the MECE principle and carry it from raw data to final recommendations.
+
+I am currently studying for a Master of Environmental and Resource Economics at the ANU Crawford School of Public Policy.
 
 </section>

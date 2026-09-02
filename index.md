@@ -8,9 +8,9 @@ permalink: /
 
 I am an applied development researcher based in Canberra, currently studying a Master of Environmental and Resource Economics at the ANU Crawford School of Public Policy.
 
-My work focuses on development, regional planning, Islamic finance, and sustainability policy.
+Over almost three years I have delivered policy analysis for Indonesian governments and international clients including GIZ and the British Embassy Jakarta, with a focus on regional development planning and Islamic finance and economics. Three regional development plans I contributed to have been adopted into law.
 
-I am particularly interested in turning complex socioeconomic data into practical, evidence-based policy recommendations for government and international clients.
+I am particularly interested in turning complex socioeconomic data (quantitative and qualitative) into practical, evidence-based policy recommendations.
 
 </section>
 
@@ -28,7 +28,7 @@ I am particularly interested in turning complex socioeconomic data into practica
 
 ## Contact
 
-Email: [{{ site.email }}](mailto:{{ site.email }})<br>
+Email: [rayhanali.rachman@anu.edu.au](mailto:rayhanali.rachman@anu.edu.au)<br>
 GitHub: [github.com/{{ site.github_username }}](https://github.com/{{ site.github_username }})
 
 </section>

@@ -6,169 +6,49 @@ permalink: /projects/
 
 <section markdown="1">
 
-## Featured Research Projects
+## Regional development planning &amp; governance
 
-<div class="entry" markdown="1">
-  <div class="entry-title">Evaluation of Sustainable Plantation Planning in East Kutai</div>
-  <div class="entry-meta">GIZ &middot; Feb&ndash;Jul 2025</div>
-  <ul>
-    <li>Analyzed plantation coverage, palm oil GDP, compliance records, and land conflict data to assess regulatory gaps in sustainable plantation implementation</li>
-    <li>Contributed to stakeholder interviews and FGDs with government officials, plantation companies, and individual farmers to validate findings</li>
-    <li>Co-authored policy recommendations covering regulatory reform, integration of plantation plans into regional budgeting cycles, and a cross-sectoral action plan across 12 strategic issues</li>
-  </ul>
+I support Indonesian city and regency governments in preparing statutory development plans and the systems used to monitor them. I help design the analytical framework using the MECE principle, analyse socioeconomic, demographic and budget data against it, diagnose why past targets were missed, and translate the findings into long-term goals and sector priorities. The work also includes primary data collection (field surveys across sub-districts, stakeholder interviews and FGDs) and regional economic analysis such as priority-commodity and land-use assessment.
+
+<div class="reg-callout">
+  <div class="reg-hdr">Three plans I contributed to have been formalised in regional regulation and adopted by their governments</div>
+  <div class="reg">Long-Term Development Plan 2025&ndash;2045, East Kutai Regency <span class="perda">&middot; Perda Kab. Kutai Timur No. 7/2024</span></div>
+  <div class="reg">Long-Term Development Plan 2025&ndash;2045, Depok City <span class="perda">&middot; Perda Kota Depok No. 12/2024</span></div>
+  <div class="reg">Medium-Term Development Plan 2025&ndash;2029, Pematang Siantar City <span class="perda">&middot; Perda Kota Pematangsiantar No. 2/2025</span></div>
 </div>
 
-<div class="entry" markdown="1">
-  <div class="entry-title">Long-Term Regional Development Plan 2025&ndash;2045, East Kutai Regency</div>
-  <div class="entry-meta">East Kutai Regency Government &middot; Jan&ndash;Dec 2024</div>
-  <ul>
-    <li>Analyzed socioeconomic, demographic, and budget data to assess regional development trajectories across key sectors</li>
-    <li>Identified unachieved development targets and diagnosed root causes through structured analytical frameworks and FGDs with regional stakeholders</li>
-    <li>Formulated policy recommendations and long-term goal orientation based on data analysis and feasibility assessment</li>
-  </ul>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Mapping of Business and Economic Potential, East Kutai Regency</div>
-  <div class="entry-meta">East Kutai Regency Government &middot; Jun&ndash;Aug 2025</div>
-  <ul>
-    <li>Contributed to primary data collection across 18 sub-districts through field surveys and stakeholder interviews as part of a research team</li>
-    <li>Integrated primary findings with BPS commodity statistics and PODES village potential data to build a comparative baseline across sub-districts</li>
-    <li>Identified priority commodities and industries per sub-district based on resource potential, infrastructure readiness, and market feasibility</li>
-  </ul>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Unlocking Indonesia's Islamic Finance Market Potential</div>
-  <div class="entry-meta">British Embassy Jakarta &middot; Dec 2024&ndash;Mar 2025</div>
-  <ul>
-    <li>Analyzed demand-side and supply-side data across Islamic banking, capital markets, and non-bank financial institutions to assess market depth and growth constraints</li>
-    <li>Examined firm-level performance metrics and asset data to benchmark Indonesia's Islamic finance sector against its potential</li>
-    <li>Contributed to a policy report, policy brief, and public discussion forum on strategic recommendations for Islamic finance development in Indonesia</li>
-  </ul>
+<div class="proj-label">Other projects in this area</div>
+<div class="proj-list">
+  <div class="row"><span class="name">Identification of Transmigration Area Potential</span> <span class="meta">&middot; East Kutai Regency Government &middot; Aug&ndash;Nov 2025</span></div>
+  <div class="row"><span class="name">Strategic Plan, Office of Population Control and Family Planning</span> <span class="meta">&middot; East Kutai Regency Government &middot; Sep&ndash;Nov 2025</span></div>
+  <div class="row"><span class="name">Mapping of Business and Economic Potential, East Kutai Regency</span> <span class="meta">&middot; East Kutai Regency Government &middot; Jun&ndash;Aug 2025</span></div>
+  <div class="row"><span class="name">Evaluation of Sustainable Plantation Planning in East Kutai</span> <span class="meta">&middot; GIZ &middot; Feb&ndash;Jul 2025</span></div>
+  <div class="row"><span class="name">Evaluation of the 2024 Regional Government Work Plan</span> <span class="meta">&middot; East Kutai Regency Government &middot; Feb&ndash;Mar 2025</span></div>
+  <div class="row"><span class="name">Grand Design for Development Control, Evaluation and Reporting</span> <span class="meta">&middot; East Kutai Cabinet Secretariat &middot; Sep&ndash;Dec 2024</span></div>
+  <div class="row"><span class="name">Technocratic Draft, Tanjung Balai City Medium-Term Development Plan 2025&ndash;2029</span> <span class="meta">&middot; Tanjung Balai City Government &middot; Jul&ndash;Aug 2024</span></div>
+  <div class="row"><span class="name">Technocratic Draft, Depok City Medium-Term Development Plan 2025&ndash;2029</span> <span class="meta">&middot; Depok City Government &middot; Jun&ndash;Sep 2024</span></div>
+  <div class="row"><span class="name">Depok City Macro Indicators Study</span> <span class="meta">&middot; Depok City Government &middot; Jun&ndash;Dec 2023</span></div>
 </div>
 
 </section>
 
 <section markdown="1">
 
-## Direct Policy Impact Involvment
+## Islamic finance and economics
 
-<div class="impact-row" markdown="1">
-  <div>
-    <div class="impact-title">Long-Term Regional Development Plan, East Kutai Regency</div>
-    <div class="impact-meta">Peraturan Daerah Kabupaten Kutai Timur Nomor 7 Tahun 2024</div>
-  </div>
-</div>
+I have worked across Indonesia's Islamic finance and economy (banking, capital markets, non-bank institutions, the hajj fund, and zakat) for clients including the British Embassy Jakarta, BPKH, KNEKS, BP Tapera and Bank Syariah Indonesia. The work pairs demand- and supply-side market analysis with quantitative methods: Nelson&ndash;Siegel yield-curve estimation in R for hajj-fund placement risk, RAS balancing of the national Islamic-economy input&ndash;output table, churn-survey instrument design and analysis, and large-scale text analysis of roughly 100,000 self-scraped Islamic banking app reviews.
 
-<div class="impact-row" markdown="1">
-  <div>
-    <div class="impact-title">Long-Term Regional Development Plan, Depok City</div>
-    <div class="impact-meta">Peraturan Daerah Kota Depok Nomor 12 Tahun 2024</div>
-  </div>
-</div>
-
-<div class="impact-row" markdown="1">
-  <div>
-    <div class="impact-title">Medium-Term Regional Development Plan, Pematang Siantar City</div>
-    <div class="impact-meta">Peraturan Daerah Kota Pematangsiantar Nomor 2 Tahun 2025</div>
-  </div>
-</div>
-
-</section>
-
-<section markdown="1">
-
-## Other Research Projects
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Study on the Hajj and Umrah Ecosystem</div>
-  <div class="entry-meta">BPKH &middot; Dec 2025</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Strategic Plan for the Office of Population Control and Family Planning</div>
-  <div class="entry-meta">East Kutai Regency Government &middot; Sep&ndash;Nov 2025</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Gold Investment Study</div>
-  <div class="entry-meta">BPKH &middot; Sep&ndash;Nov 2025</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Identification of Transmigration Area Potential in East Kutai Regency</div>
-  <div class="entry-meta">East Kutai Regency Government &middot; Aug&ndash;Nov 2025</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Roadmap for Sharia-Based Tapera Program</div>
-  <div class="entry-meta">BP Tapera &middot; Jul&ndash;Sep 2025</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Development of the 2025&ndash;2029 Medium-Term Regional Development Plan, Pematang Siantar City</div>
-  <div class="entry-meta">Pematang Siantar City Government &middot; Mar&ndash;Jun 2025</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Evaluation of the 2024 Regional Government Work Plan of East Kutai Regency</div>
-  <div class="entry-meta">East Kutai Regency Government &middot; Feb&ndash;Mar 2025</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Study on Investment Risk Exposure Identification and Measurement and BPKH Return Risk</div>
-  <div class="entry-meta">BPKH &middot; Sep&ndash;Dec 2024</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">FGD on KNEKS Islamic Economic Macro Indicators &ndash; IO Table Update (RAS Method)</div>
-  <div class="entry-meta">KNEKS &middot; Nov 2024</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Development of Grand Design for Development Control, Evaluation and Reporting</div>
-  <div class="entry-meta">East Kutai Regency Cabinet Secretariat &middot; Sep&ndash;Dec 2024</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Study on Jakarta Islamic Economy and Finance Development Roadmap</div>
-  <div class="entry-meta">DKI Jakarta Provincial Government &middot; Aug&ndash;Nov 2024</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Technocratic Draft for Tanjung Balai City Medium-Term Regional Development Plan 2025&ndash;2029</div>
-  <div class="entry-meta">Tanjung Balai City Government &middot; Jul&ndash;Aug 2024</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Technocratic Draft for Depok City Medium-Term Regional Development Plan 2025&ndash;2029</div>
-  <div class="entry-meta">Depok City Government &middot; Jun&ndash;Sep 2024</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">BSI Mobile Churn Rate Study</div>
-  <div class="entry-meta">Bank Syariah Indonesia &middot; Mar&ndash;Jul 2024</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Preparation of Depok City Long-Term Regional Development Plan 2025&ndash;2045</div>
-  <div class="entry-meta">Depok City Government &middot; Jan&ndash;Jun 2024</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Study on Hajj Financial Sustainability in BPKH Placement at BPS BPIH</div>
-  <div class="entry-meta">BPKH &middot; Oct 2023&ndash;Feb 2024</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">Depok City Macro Indicators Study</div>
-  <div class="entry-meta">Depok City Government &middot; Jun&ndash;Dec 2023</div>
-</div>
-
-<div class="entry" markdown="1">
-  <div class="entry-title">BAZNAS Human Resources Study</div>
-  <div class="entry-meta">BAZNAS &middot; Jun&ndash;Sep 2023</div>
+<div class="proj-list">
+  <div class="row"><span class="name">Study on the Hajj and Umrah Ecosystem</span> <span class="meta">&middot; BPKH &middot; Dec 2025</span></div>
+  <div class="row"><span class="name">Gold Investment Study</span> <span class="meta">&middot; BPKH &middot; Sep&ndash;Nov 2025</span></div>
+  <div class="row"><span class="name">Roadmap for a Sharia-Based Tapera Program</span> <span class="meta">&middot; BP Tapera &middot; Jul&ndash;Sep 2025</span></div>
+  <div class="row"><span class="name">Unlocking Indonesia's Islamic Finance Market Potential</span> <span class="meta">&middot; British Embassy Jakarta &middot; Dec 2024&ndash;Mar 2025</span></div>
+  <div class="row"><span class="name">Study on Investment Risk Exposure and BPKH Return Risk</span> <span class="meta">&middot; BPKH &middot; Sep&ndash;Dec 2024</span></div>
+  <div class="row"><span class="name">Islamic Economic Macro Indicators: IO Table Update, RAS Method</span> <span class="meta">&middot; KNEKS &middot; Nov 2024</span></div>
+  <div class="row"><span class="name">Study on Jakarta Islamic Economy and Finance Development Roadmap</span> <span class="meta">&middot; DKI Jakarta Provincial Government &middot; Aug&ndash;Nov 2024</span></div>
+  <div class="row"><span class="name">BSI Mobile Churn Rate Study</span> <span class="meta">&middot; Bank Syariah Indonesia &middot; Mar&ndash;Jul 2024</span></div>
+  <div class="row"><span class="name">Study on Hajj Financial Sustainability, BPKH Placement at BPS BPIH</span> <span class="meta">&middot; BPKH &middot; Oct 2023&ndash;Feb 2024</span></div>
+  <div class="row"><span class="name">BAZNAS Human Resources Study</span> <span class="meta">&middot; BAZNAS &middot; Jun&ndash;Sep 2023</span></div>
 </div>
 
 </section>

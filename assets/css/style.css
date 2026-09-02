@@ -123,32 +123,48 @@ main h2 {
 .project-title:hover { color: var(--link); }
 .project-desc { color: var(--muted); font-size: 14px; margin-top: 4px; }
 
-.entry { margin-bottom: 26px; }
-.entry:last-child { margin-bottom: 0; }
-.entry-title { font-weight: 700; color: var(--heading); }
-.entry-meta { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
-.entry ul { font-size: 14px; padding-left: 20px; }
-.entry p { font-size: 14px; margin: 0; }
-.entry:not(:has(ul)) .entry-meta { margin-bottom: 0; }
-
-.impact-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
+/* Adopted-regulation callout (Projects) */
+.reg-callout {
+  border-left: 3px solid var(--link);
+  background: #f4f6f7;
+  padding: 18px 22px;
+  margin: 0 0 26px;
+  border-radius: 0 3px 3px 0;
 }
-.impact-row:last-child { border-bottom: none; }
-.impact-title { font-weight: 700; color: var(--heading); font-size: 14px; }
-.impact-meta { color: var(--muted); font-size: 12px; margin-top: 2px; }
-.impact-link {
-  font-size: 12px;
+.reg-callout .reg-hdr {
   font-weight: 700;
-  white-space: nowrap;
-  color: var(--link);
+  color: var(--heading);
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 12px;
 }
-.impact-link:hover { color: var(--link-hover); }
+.reg-callout .reg {
+  font-size: 14px;
+  line-height: 1.45;
+  margin-bottom: 10px;
+}
+.reg-callout .reg:last-child { margin-bottom: 0; }
+.reg-callout .reg .perda { color: var(--muted); }
+
+/* Bulletless project index rows (Projects) */
+.proj-label {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+.proj-list { margin: 0 0 26px; }
+.proj-list .row {
+  padding: 9px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.proj-list .row:first-child { border-top: 1px solid #eee; }
+.proj-list .row .name { color: var(--heading); }
+.proj-list .row .meta { color: var(--muted); }
 
 footer.site-footer {
   max-width: 1100px;
