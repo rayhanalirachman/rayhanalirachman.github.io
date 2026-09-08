@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Rayhan Ali">
-  <title>Simulating Market with Agent-Based Model</title>
+  <title>Simulating a Market with an Agent-Based Model</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -209,35 +209,36 @@
   <div class="et-main">
 
     <div class="et-headline">
-      <h1 class="title">Simulating Market with Agent-Based Model</h1>
+      <h1 class="title">Simulating a Market with an Agent-Based Model</h1>
           </div>
 
     <div class="et-meta">
             <div class="et-field"><span class="et-label">Prepared for</span>Public</div>
                   <div class="et-field"><span class="et-label">Author</span>Rayhan Ali</div>
-                        <div class="et-field"><span class="et-label">Status</span>Draft</div>
+                        <div class="et-field"><span class="et-label">Status</span>Write-up</div>
                 </div>
 
   </div>
 
-    <div class="et-tagline">Simulating a market of buyers and sellers with an agent-based model</div>
+    <div class="et-tagline">Watching supply and demand build themselves out of buyers and sellers who each know only one price</div>
   
 </section>
-<section id="setting-up" class="slide level2">
-<h2>Setting up</h2>
+<section id="the-question" class="slide level2">
+<h2>The question</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>Hello, this is a simulation of a market with buyer and seller within agent-based model that utilise my own package, tidyABM</p>
-<p>tidyABM is a ABM package in R that utilise tidy principle. It use similar grammar decision as netlogo, it has 3 main components:</p>
-<ul>
-<li>setting up the agents</li>
-<li>what happen at each period</li>
-<li>running the simulation</li>
-</ul>
-<p>It based on primer video about that exact thing that you can see here:</p>
-<p><a href="https://youtu.be/PNtKXWNKGN8?si=KQebB8FgdtKe-Kl5">Youtube</a></p>
+<p>Can sellers and buyers show up on an agreed price, without anyone steering?</p>
+<p>We will use a toy model with a handful of buyers and sellers, each knowing just one number: the price it’s willing to accept or pay. No auctioneer, nobody solving equations. Every round, an agent nudges its expected price up or down depending on whether it managed to trade or not.</p>
+<p>I built it with tidyABM, an R package for agent-based models that I wrote.</p>
 </div><div class="column" style="width:50%;">
-<p>First we need to install and load the necessary package, we will use tidyverse and tidyABM</p>
+<p>tidyABM leans on tidyverse habits, and the way you spell out a model owes a lot to NetLogo that focus on reasability. There are 3 main parts:</p>
+<ul>
+<li>setting up the agents, with <code>abm_setup()</code></li>
+<li>defining what happens each period, with <code>abm_go()</code></li>
+<li>running the simulation, with <code>abm_run()</code></li>
+</ul>
+<p>The idea comes straight from this Primer video.</p>
+<p><a href="https://youtu.be/PNtKXWNKGN8?si=KQebB8FgdtKe-Kl5">Primer — bottom-up market simulation</a></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-label="1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">"rayhanalirachman/tidyABM"</span>)</span>
 <span id="cb1-2"><a href="" aria-label="2"></a><span class="fu">library</span>(tidyABM)</span>
@@ -245,20 +246,20 @@
 </div>
 </div></div>
 </section>
-<section id="defining-the-agent" class="slide level2">
-<h2>Defining the agent</h2>
+<section id="defining-the-agents" class="slide level2">
+<h2>Defining the agents</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>To start, we will use a pretty simple example, with 1 seller and 2 buyer</p>
-<p>Each agent will have:</p>
+<p>Lets start small with one seller, two buyers.</p>
+<p>Each agent carries four things.</p>
 <ul>
-<li>Price limit they are willing to accept or pay (i.e.&nbsp;WTA for seller and WTP for buyer)</li>
-<li>Expected price to simulate what the agent expect the price should be, this will be adaptive depending on wether they succesfully trade or not</li>
-<li>And 2 other variable, transacted and deal_price which the information wether the trade is succesfull or not be stored there, and the agreed price</li>
+<li><code>limit_price</code> is the worst price the agent will accept. WTA for a seller, WTP for a buyer.</li>
+<li><code>expected_price</code> is its current guess at a fair price. This is the one that moves each round.</li>
+<li><code>transacted</code> records whether it traded this round.</li>
+<li><code>deal_price</code> records the agreed price, if there was one.</li>
 </ul>
 </div><div class="column" style="width:50%;">
-<p>Setting it up is pretty straightforward, how many agent there is (n) and what variable will each agent needed to have</p>
-<p>in this case, we will have 1 seller and 1 buyer</p>
+<p>Setup comes down to two questions: how many agents, and what does each one hold. We specify the value of each variables (columns in tidy) directly.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="" aria-label="1"></a>market <span class="ot">&lt;-</span> <span class="fu">abm_setup</span>(</span>
 <span id="cb2-2"><a href="" aria-label="2"></a>  <span class="at">agents =</span> <span class="fu">list</span>(</span>
@@ -272,63 +273,60 @@
 <span id="cb2-10"><a href="" aria-label="10"></a>    <span class="at">buyer =</span> <span class="fu">abm_agents</span>(</span>
 <span id="cb2-11"><a href="" aria-label="11"></a>      <span class="at">n =</span> <span class="dv">2</span>,</span>
 <span id="cb2-12"><a href="" aria-label="12"></a>      <span class="at">limit_price =</span> <span class="fu">c</span>(<span class="dv">55</span>, <span class="dv">60</span>),</span>
-<span id="cb2-13"><a href="" aria-label="13"></a>      <span class="at">expected_price =</span> <span class="fu">c</span>(<span class="dv">40</span>,<span class="dv">45</span>),</span>
+<span id="cb2-13"><a href="" aria-label="13"></a>      <span class="at">expected_price =</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">45</span>),</span>
 <span id="cb2-14"><a href="" aria-label="14"></a>      <span class="at">transacted =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb2-15"><a href="" aria-label="15"></a>      <span class="at">deal_price =</span> <span class="cn">NA_real_</span></span>
-<span id="cb2-16"><a href="" aria-label="16"></a>    )</span>
-<span id="cb2-17"><a href="" aria-label="17"></a>  )</span>
-<span id="cb2-18"><a href="" aria-label="18"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-16"><a href="" aria-label="16"></a>    )))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div></div>
 </section>
-<section id="setting-up-what-happen-at-each-period-tick" class="slide level2">
-<h2>Setting up what happen at each period (tick)</h2>
+<section id="what-happens-each-period-tick" class="slide level2">
+<h2>What happens each period (tick)</h2>
 <div class="columns">
 <div class="column" style="width:30%;">
-<p>To set what happen at each tick, we declare what happen in a descending order, much like a story</p>
+<p>Then we define what happen at each period with <code>abm_go</code>. It reads top to bottom, almost like a story. Reset, match, trade and learn.</p>
 </div><div class="column" style="width:70%;">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-label="1"></a>go <span class="ot">&lt;-</span> <span class="fu">abm_go</span>(</span>
-<span id="cb3-2"><a href="" aria-label="2"></a>  <span class="co"># First we set at the beginning that there is no transaction</span></span>
-<span id="cb3-3"><a href="" aria-label="3"></a>  <span class="fu">abm_rules</span>(transacted <span class="sc">~</span> <span class="cn">FALSE</span>, deal_price <span class="sc">~</span> <span class="cn">NA_real_</span>), </span>
+<span id="cb3-2"><a href="" aria-label="2"></a>  <span class="co"># 1. Reset the transaction and price</span></span>
+<span id="cb3-3"><a href="" aria-label="3"></a>  <span class="fu">abm_rules</span>(transacted <span class="sc">~</span> <span class="cn">FALSE</span>, deal_price <span class="sc">~</span> <span class="cn">NA_real_</span>),</span>
 <span id="cb3-4"><a href="" aria-label="4"></a></span>
-<span id="cb3-5"><a href="" aria-label="5"></a>  <span class="co"># Then we match the buyer and seller randomly</span></span>
+<span id="cb3-5"><a href="" aria-label="5"></a>  <span class="co"># 2. Match each buyer with a seller at random</span></span>
 <span id="cb3-6"><a href="" aria-label="6"></a>  <span class="fu">abm_match</span>(<span class="at">pair =</span> <span class="st">"opposite_group"</span>, <span class="at">by =</span> .group),</span>
 <span id="cb3-7"><a href="" aria-label="7"></a></span>
-<span id="cb3-8"><a href="" aria-label="8"></a>  <span class="co"># Then simulating the trade</span></span>
+<span id="cb3-8"><a href="" aria-label="8"></a>  <span class="co"># 3. Trade if the two sides overlap</span></span>
 <span id="cb3-9"><a href="" aria-label="9"></a>  <span class="fu">abm_rules</span>(</span>
-<span id="cb3-10"><a href="" aria-label="10"></a>    <span class="co"># Transaction only occur if:                                 </span></span>
+<span id="cb3-10"><a href="" aria-label="10"></a>    <span class="co"># A trade occurs only if the buyer expects at least what the seller expects</span></span>
 <span id="cb3-11"><a href="" aria-label="11"></a>    transacted <span class="sc">~</span> <span class="fu">case_when</span>(</span>
 <span id="cb3-12"><a href="" aria-label="12"></a>      .group <span class="sc">==</span> <span class="st">"seller"</span> <span class="sc">&amp;</span> partner_expected_price <span class="sc">&gt;=</span> expected_price <span class="sc">~</span> <span class="cn">TRUE</span>,</span>
 <span id="cb3-13"><a href="" aria-label="13"></a>      .group <span class="sc">==</span> <span class="st">"buyer"</span>  <span class="sc">&amp;</span> expected_price <span class="sc">&gt;=</span> partner_expected_price <span class="sc">~</span> <span class="cn">TRUE</span>,</span>
 <span id="cb3-14"><a href="" aria-label="14"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">FALSE</span>),</span>
-<span id="cb3-15"><a href="" aria-label="15"></a>    <span class="co"># And the deal price is the middle price of both parties expected price</span></span>
+<span id="cb3-15"><a href="" aria-label="15"></a>    <span class="co"># The deal price is the midpoint of both sides' expectations</span></span>
 <span id="cb3-16"><a href="" aria-label="16"></a>    deal_price <span class="sc">~</span> <span class="fu">if_else</span>(</span>
 <span id="cb3-17"><a href="" aria-label="17"></a>      (.group <span class="sc">==</span> <span class="st">"seller"</span> <span class="sc">&amp;</span> partner_expected_price <span class="sc">&gt;=</span> expected_price) <span class="sc">|</span></span>
 <span id="cb3-18"><a href="" aria-label="18"></a>      (.group <span class="sc">==</span> <span class="st">"buyer"</span>  <span class="sc">&amp;</span> expected_price <span class="sc">&gt;=</span> partner_expected_price),</span>
 <span id="cb3-19"><a href="" aria-label="19"></a>      (expected_price <span class="sc">+</span> partner_expected_price) <span class="sc">/</span> <span class="dv">2</span>, <span class="cn">NA_real_</span>)),</span>
 <span id="cb3-20"><a href="" aria-label="20"></a></span>
-<span id="cb3-21"><a href="" aria-label="21"></a>  <span class="co"># Each agent then update their expected price, given wether they </span></span>
-<span id="cb3-22"><a href="" aria-label="22"></a>  <span class="co"># succesfully trade or not</span></span>
-<span id="cb3-23"><a href="" aria-label="23"></a>  <span class="fu">abm_rules</span>(                            </span>
-<span id="cb3-24"><a href="" aria-label="24"></a>    expected_price <span class="sc">~</span> <span class="fu">case_when</span>(</span>
-<span id="cb3-25"><a href="" aria-label="25"></a>      .group <span class="sc">==</span> <span class="st">"seller"</span> <span class="sc">&amp;</span>  transacted <span class="sc">~</span> expected_price <span class="sc">+</span> <span class="dv">1</span>,</span>
-<span id="cb3-26"><a href="" aria-label="26"></a>      .group <span class="sc">==</span> <span class="st">"seller"</span> <span class="sc">&amp;</span> <span class="sc">!</span>transacted <span class="sc">~</span> <span class="fu">pmax</span>(expected_price <span class="sc">-</span> <span class="dv">1</span>, limit_price),</span>
-<span id="cb3-27"><a href="" aria-label="27"></a>      .group <span class="sc">==</span> <span class="st">"buyer"</span>  <span class="sc">&amp;</span>  transacted <span class="sc">~</span> expected_price <span class="sc">-</span> <span class="dv">1</span>,</span>
-<span id="cb3-28"><a href="" aria-label="28"></a>      .group <span class="sc">==</span> <span class="st">"buyer"</span>  <span class="sc">&amp;</span> <span class="sc">!</span>transacted <span class="sc">~</span> <span class="fu">pmin</span>(expected_price <span class="sc">+</span> <span class="dv">1</span>, limit_price),</span>
-<span id="cb3-29"><a href="" aria-label="29"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> expected_price),</span>
-<span id="cb3-30"><a href="" aria-label="30"></a>    <span class="at">.scope =</span> <span class="st">"population"</span>)</span>
-<span id="cb3-31"><a href="" aria-label="31"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-21"><a href="" aria-label="21"></a>  <span class="co"># 4. Learn: each agent nudges its expectation based on the outcome</span></span>
+<span id="cb3-22"><a href="" aria-label="22"></a>  <span class="fu">abm_rules</span>(</span>
+<span id="cb3-23"><a href="" aria-label="23"></a>    expected_price <span class="sc">~</span> <span class="fu">case_when</span>(</span>
+<span id="cb3-24"><a href="" aria-label="24"></a>      .group <span class="sc">==</span> <span class="st">"seller"</span> <span class="sc">&amp;</span>  transacted <span class="sc">~</span> expected_price <span class="sc">+</span> <span class="dv">1</span>,</span>
+<span id="cb3-25"><a href="" aria-label="25"></a>      .group <span class="sc">==</span> <span class="st">"seller"</span> <span class="sc">&amp;</span> <span class="sc">!</span>transacted <span class="sc">~</span> <span class="fu">pmax</span>(expected_price <span class="sc">-</span> <span class="dv">1</span>, limit_price),</span>
+<span id="cb3-26"><a href="" aria-label="26"></a>      .group <span class="sc">==</span> <span class="st">"buyer"</span>  <span class="sc">&amp;</span>  transacted <span class="sc">~</span> expected_price <span class="sc">-</span> <span class="dv">1</span>,</span>
+<span id="cb3-27"><a href="" aria-label="27"></a>      .group <span class="sc">==</span> <span class="st">"buyer"</span>  <span class="sc">&amp;</span> <span class="sc">!</span>transacted <span class="sc">~</span> <span class="fu">pmin</span>(expected_price <span class="sc">+</span> <span class="dv">1</span>, limit_price),</span>
+<span id="cb3-28"><a href="" aria-label="28"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> expected_price),</span>
+<span id="cb3-29"><a href="" aria-label="29"></a>    <span class="at">.scope =</span> <span class="st">"population"</span>)</span>
+<span id="cb3-30"><a href="" aria-label="30"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div></div>
 </section>
-<section id="then-run-the-simulation" class="slide level2">
-<h2>Then run the simulation</h2>
-<p>To run the simulation, we use abm_run() function with inputting the setup (in this case market), what happen at each tick (go) and how many periods will the model run.</p>
+<section id="running-the-simulation" class="slide level2">
+<h2>Running the simulation</h2>
+<p><code>abm_run()</code> takes three things: the setup, the per-tick logic, and how many ticks to run.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-label="1"></a>result <span class="ot">&lt;-</span> <span class="fu">abm_run</span>(market, go, <span class="at">ticks =</span> <span class="dv">200</span>, <span class="at">seed =</span> <span class="dv">123</span>) <span class="co"># Using seed for reproducibility</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-label="1"></a>result <span class="ot">&lt;-</span> <span class="fu">abm_run</span>(market, go, <span class="at">ticks =</span> <span class="dv">200</span>, <span class="at">seed =</span> <span class="dv">123</span>) <span class="co"># seed for reproducibility</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The results is in a tibble, which can easily analysed using dplyr.</p>
+<p>What comes back is a plain tibble, so dplyr works on it right away.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-label="1"></a>result <span class="sc">|&gt;</span> <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -353,17 +351,17 @@
 5   200     3 buyer           60             59 TRUE             57.5</code></pre>
 </div>
 </div>
-<p>As you can see, the column match with what we describe at the setup</p>
+<p>The columns are the ones from the setup, the variable (properties) each agent hold, nothing more.</p>
 </section>
 <section id="analysing-the-simulation" class="slide level2">
 <h2>Analysing the simulation</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
-<p>We can analyse the data with ggplot. For example, we want to see how will the agreed price evolve overtime.</p>
-<p>With only 1 seller and 2 buyer, the buyer expected price will always increase, as there will always be 1 buyer that doesnt transact (which in turn raised its expected price).</p>
+<p>From here it’s just ggplot. Say we want to watch the deal price move over time.</p>
+<p>One seller and two buyers means somebody always goes home empty-handed. That buyer bumps its expectation up next round, so the price drifts upward.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-label="1"></a>result <span class="sc">|&gt;</span> </span>
-<span id="cb9-2"><a href="" aria-label="2"></a>  <span class="fu">filter</span>(.group <span class="sc">==</span> <span class="st">"buyer"</span>) <span class="sc">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-label="1"></a>result <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="" aria-label="2"></a>  <span class="fu">filter</span>(.group <span class="sc">==</span> <span class="st">"buyer"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb9-3"><a href="" aria-label="3"></a>  <span class="fu">count</span>(transacted)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 2
@@ -373,7 +371,6 @@
 2 TRUE         113</code></pre>
 </div>
 </div>
-<p>Thus, price increase.</p>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -383,24 +380,12 @@
 <p><strong>Note</strong></p>
 </div>
 <div class="callout-content">
-<p>This also show when there is more demand (buyer) than supply (seller), price will increase.</p>
+<p>More buyers than sellers, and the price climbs.</p>
 </div>
 </div>
 </div>
 </div><div class="column" style="width:60%;">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-label="1"></a>result <span class="sc">|&gt;</span> </span>
-<span id="cb11-2"><a href="" aria-label="2"></a>  <span class="fu">filter</span>(.group <span class="sc">==</span> <span class="st">"buyer"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb11-3"><a href="" aria-label="3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> tick, <span class="at">y =</span> deal_price)) <span class="sc">+</span></span>
-<span id="cb11-4"><a href="" aria-label="4"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb11-5"><a href="" aria-label="5"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">21</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">stroke =</span> <span class="fl">0.8</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
-<span id="cb11-6"><a href="" aria-label="6"></a>  <span class="fu">labs</span>(</span>
-<span id="cb11-7"><a href="" aria-label="7"></a>    <span class="at">title =</span> <span class="st">"Deal Price Across Simulation Ticks"</span>,</span>
-<span id="cb11-8"><a href="" aria-label="8"></a>    <span class="at">x =</span> <span class="st">"Simulation Tick"</span>,</span>
-<span id="cb11-9"><a href="" aria-label="9"></a>    <span class="at">y =</span> <span class="st">"Deal Price"</span>,) <span class="sc">+</span></span>
-<span id="cb11-10"><a href="" aria-label="10"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb11-11"><a href="" aria-label="11"></a>  <span class="fu">theme</span>(<span class="at">plot.title.position =</span> <span class="st">"plot"</span>, </span>
-<span id="cb11-12"><a href="" aria-label="12"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">13</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure>
@@ -411,34 +396,34 @@
 </div>
 </div></div>
 </section>
-<section id="what-happens-if-2-seller-and-1-buyer" class="slide level2">
-<h2>What happens if 2 seller and 1 buyer?</h2>
+<section id="what-if-there-are-2-sellers-and-1-buyer" class="slide level2">
+<h2>What if there are 2 sellers and 1 buyer?</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
-<p>lets now see what happen when there is more seller, as the package is using 2 main blocks, we can just swap the block that need to be changed.</p>
+<p>Flip the ratio. The model is two blocks, so I swap the setup and leave <code>go</code> alone.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-label="1"></a>market2 <span class="ot">&lt;-</span> <span class="fu">abm_setup</span>(</span>
-<span id="cb12-2"><a href="" aria-label="2"></a>  <span class="at">agents =</span> <span class="fu">list</span>(</span>
-<span id="cb12-3"><a href="" aria-label="3"></a>    <span class="at">seller =</span> <span class="fu">abm_agents</span>(</span>
-<span id="cb12-4"><a href="" aria-label="4"></a>      <span class="at">n =</span> <span class="dv">2</span>,</span>
-<span id="cb12-5"><a href="" aria-label="5"></a>      <span class="at">limit_price =</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">25</span>),</span>
-<span id="cb12-6"><a href="" aria-label="6"></a>      <span class="at">expected_price =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">36</span>),</span>
-<span id="cb12-7"><a href="" aria-label="7"></a>      <span class="at">transacted =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb12-8"><a href="" aria-label="8"></a>      <span class="at">deal_price =</span> <span class="cn">NA_real_</span>),</span>
-<span id="cb12-9"><a href="" aria-label="9"></a>    <span class="at">buyer =</span> <span class="fu">abm_agents</span>(</span>
-<span id="cb12-10"><a href="" aria-label="10"></a>      <span class="at">n =</span> <span class="dv">1</span>,</span>
-<span id="cb12-11"><a href="" aria-label="11"></a>      <span class="at">limit_price =</span> <span class="dv">60</span>,</span>
-<span id="cb12-12"><a href="" aria-label="12"></a>      <span class="at">expected_price =</span> <span class="dv">45</span>,</span>
-<span id="cb12-13"><a href="" aria-label="13"></a>      <span class="at">transacted =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb12-14"><a href="" aria-label="14"></a>      <span class="at">deal_price =</span> <span class="cn">NA_real_</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-label="1"></a>market2 <span class="ot">&lt;-</span> <span class="fu">abm_setup</span>(</span>
+<span id="cb11-2"><a href="" aria-label="2"></a>  <span class="at">agents =</span> <span class="fu">list</span>(</span>
+<span id="cb11-3"><a href="" aria-label="3"></a>    <span class="at">seller =</span> <span class="fu">abm_agents</span>(</span>
+<span id="cb11-4"><a href="" aria-label="4"></a>      <span class="at">n =</span> <span class="dv">2</span>,</span>
+<span id="cb11-5"><a href="" aria-label="5"></a>      <span class="at">limit_price =</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">25</span>),</span>
+<span id="cb11-6"><a href="" aria-label="6"></a>      <span class="at">expected_price =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">36</span>),</span>
+<span id="cb11-7"><a href="" aria-label="7"></a>      <span class="at">transacted =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb11-8"><a href="" aria-label="8"></a>      <span class="at">deal_price =</span> <span class="cn">NA_real_</span>),</span>
+<span id="cb11-9"><a href="" aria-label="9"></a>    <span class="at">buyer =</span> <span class="fu">abm_agents</span>(</span>
+<span id="cb11-10"><a href="" aria-label="10"></a>      <span class="at">n =</span> <span class="dv">1</span>,</span>
+<span id="cb11-11"><a href="" aria-label="11"></a>      <span class="at">limit_price =</span> <span class="dv">60</span>,</span>
+<span id="cb11-12"><a href="" aria-label="12"></a>      <span class="at">expected_price =</span> <span class="dv">45</span>,</span>
+<span id="cb11-13"><a href="" aria-label="13"></a>      <span class="at">transacted =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb11-14"><a href="" aria-label="14"></a>      <span class="at">deal_price =</span> <span class="cn">NA_real_</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Then we run it again.</p>
+<p>Run it again.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-label="1"></a>result2 <span class="ot">&lt;-</span> <span class="fu">abm_run</span>(market2, go, <span class="at">ticks =</span> <span class="dv">200</span>, <span class="at">seed =</span> <span class="dv">123</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-label="1"></a>result2 <span class="ot">&lt;-</span> <span class="fu">abm_run</span>(market2, go, <span class="at">ticks =</span> <span class="dv">200</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:60%;">
-<p>The plotting code is similar to before, so i will not show it again.</p>
-<p>As we would expect, while there is more seller (supply) then buyer (demand), the price will decrease.</p>
+<p>Same plotting code as before, hidden this time.</p>
+<p>Now the sellers are the ones competing. The price falls.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -450,34 +435,34 @@
 </div>
 </div></div>
 </section>
-<section id="equal-amount-many-buyer-and-seller-with-many-agents" class="slide level2">
-<h2>Equal amount many buyer and seller with many agents</h2>
+<section id="many-buyers-and-sellers-balanced" class="slide level2">
+<h2>Many buyers and sellers, balanced</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>Lets up the game now, lets use 50 buyer and 50 seller. But rather than we specify the limit_price and expected_price one by one, we will use a function to specify it</p>
+<p>Now scale it up. Fifty on each side. Rather than type out a hundred prices, I draw them from a log-normal.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-label="1"></a>market3 <span class="ot">&lt;-</span> <span class="fu">abm_setup</span>(</span>
-<span id="cb14-2"><a href="" aria-label="2"></a>  <span class="at">agents =</span> <span class="fu">list</span>(</span>
-<span id="cb14-3"><a href="" aria-label="3"></a>    <span class="at">seller =</span> <span class="fu">abm_agents</span>(</span>
-<span id="cb14-4"><a href="" aria-label="4"></a>      <span class="at">n =</span> <span class="dv">50</span>,</span>
-<span id="cb14-5"><a href="" aria-label="5"></a>      <span class="at">limit_price =</span> <span class="sc">~</span><span class="fu">rlnorm</span>(n, <span class="fu">log</span>(<span class="dv">30</span>), <span class="fl">0.5</span>),</span>
-<span id="cb14-6"><a href="" aria-label="6"></a>      <span class="at">expected_price =</span> <span class="sc">~</span><span class="fu">rlnorm</span>(n, <span class="fu">log</span>(<span class="dv">30</span>), <span class="fl">0.7</span>),</span>
-<span id="cb14-7"><a href="" aria-label="7"></a>      <span class="at">transacted =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb14-8"><a href="" aria-label="8"></a>      <span class="at">deal_price =</span> <span class="cn">NA_real_</span>),</span>
-<span id="cb14-9"><a href="" aria-label="9"></a>    <span class="at">buyer =</span> <span class="fu">abm_agents</span>(</span>
-<span id="cb14-10"><a href="" aria-label="10"></a>      <span class="at">n =</span> <span class="dv">50</span>,</span>
-<span id="cb14-11"><a href="" aria-label="11"></a>      <span class="at">limit_price =</span> <span class="sc">~</span><span class="fu">rlnorm</span>(n, <span class="fu">log</span>(<span class="dv">30</span>), <span class="fl">0.5</span>),</span>
-<span id="cb14-12"><a href="" aria-label="12"></a>      <span class="at">expected_price =</span> <span class="sc">~</span><span class="fu">rlnorm</span>(n, <span class="fu">log</span>(<span class="dv">30</span>), <span class="fl">0.7</span>),</span>
-<span id="cb14-13"><a href="" aria-label="13"></a>      <span class="at">transacted =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb14-14"><a href="" aria-label="14"></a>      <span class="at">deal_price =</span> <span class="cn">NA_real_</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-label="1"></a>market3 <span class="ot">&lt;-</span> <span class="fu">abm_setup</span>(</span>
+<span id="cb13-2"><a href="" aria-label="2"></a>  <span class="at">agents =</span> <span class="fu">list</span>(</span>
+<span id="cb13-3"><a href="" aria-label="3"></a>    <span class="at">seller =</span> <span class="fu">abm_agents</span>(</span>
+<span id="cb13-4"><a href="" aria-label="4"></a>      <span class="at">n =</span> <span class="dv">50</span>,</span>
+<span id="cb13-5"><a href="" aria-label="5"></a>      <span class="at">limit_price =</span> <span class="sc">~</span><span class="fu">rlnorm</span>(n, <span class="fu">log</span>(<span class="dv">30</span>), <span class="fl">0.5</span>),</span>
+<span id="cb13-6"><a href="" aria-label="6"></a>      <span class="at">expected_price =</span> <span class="sc">~</span><span class="fu">rlnorm</span>(n, <span class="fu">log</span>(<span class="dv">30</span>), <span class="fl">0.7</span>),</span>
+<span id="cb13-7"><a href="" aria-label="7"></a>      <span class="at">transacted =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb13-8"><a href="" aria-label="8"></a>      <span class="at">deal_price =</span> <span class="cn">NA_real_</span>),</span>
+<span id="cb13-9"><a href="" aria-label="9"></a>    <span class="at">buyer =</span> <span class="fu">abm_agents</span>(</span>
+<span id="cb13-10"><a href="" aria-label="10"></a>      <span class="at">n =</span> <span class="dv">50</span>,</span>
+<span id="cb13-11"><a href="" aria-label="11"></a>      <span class="at">limit_price =</span> <span class="sc">~</span><span class="fu">rlnorm</span>(n, <span class="fu">log</span>(<span class="dv">30</span>), <span class="fl">0.5</span>),</span>
+<span id="cb13-12"><a href="" aria-label="12"></a>      <span class="at">expected_price =</span> <span class="sc">~</span><span class="fu">rlnorm</span>(n, <span class="fu">log</span>(<span class="dv">30</span>), <span class="fl">0.7</span>),</span>
+<span id="cb13-13"><a href="" aria-label="13"></a>      <span class="at">transacted =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb13-14"><a href="" aria-label="14"></a>      <span class="at">deal_price =</span> <span class="cn">NA_real_</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Then we run it again.</p>
+<p>Run it again.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-label="1"></a>result3 <span class="ot">&lt;-</span> <span class="fu">abm_run</span>(market3, go, <span class="at">ticks =</span> <span class="dv">200</span>, <span class="at">seed =</span> <span class="dv">5</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-label="1"></a>result3 <span class="ot">&lt;-</span> <span class="fu">abm_run</span>(market3, go, <span class="at">ticks =</span> <span class="dv">200</span>, <span class="at">seed =</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:50%;">
-<p>We will only show the mean deal_price and the standard error to show variability.</p>
-<p>As we can see, there are huge variation in the early tick, but overtime, it almost merge to a single price. This is the price mechanism.</p>
+<p>This plots the mean deal price per tick, with a standard-error ribbon.</p>
+<p>The first few ticks are spread so much (look at the shaded area). Then the spread tightens and prices settle around one number. Nobody coordinated that. It’s the market mechanism.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -488,12 +473,29 @@
 </div>
 </div>
 </div></div>
+</section>
+<section id="what-i-take-from-it" class="slide level2">
+<h2>What I take from it</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Small rules, run enough times, add up to something that characterizes market mechanisms.</p>
+<ul>
+<li>Change which side outnumbers the other and the price moves the way the textbook says: up with more buyers, down with more sellers.</li>
+<li>With fifty agents a side, the scattered deal prices pull together into one clearing price. No auctioneer, no equation, nobody in charge of it.</li>
+</ul>
+<p>Keeping setup and rules as separate blocks also paid off. Every new scenario was a one-block swap, not a rewrite.</p>
+</div><div class="column" style="width:45%;">
+<p>tidyABM is a tidy-friendly ABM package for R, its still experimental but can be checked here</p>
+<p><a href="https://github.com/rayhanalirachman/tidyABM">github.com/rayhanalirachman/tidyABM</a></p>
+<p>The original market model is lifted from this <a href="https://youtu.be/PNtKXWNKGN8?si=KQebB8FgdtKe-Kl5">Primer video</a>.</p>
+<p>Issues and pull requests welcome.</p>
+</div></div>
 
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
-<p>simulating market with ABM</p>
+<p>Simulating a market with ABM</p>
 </div>
 </div></div>
 
