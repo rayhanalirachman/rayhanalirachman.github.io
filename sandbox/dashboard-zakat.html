@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1440">
+  <base target="_top">
+  <title>Dashboard Zakat Nasional</title>
+  <style>
+    *{box-sizing:border-box;}
+    html,body{height:100%;margin:0;overflow:hidden;}
+    body{background:#FCFCFB;display:flex;justify-content:center;align-items:center;}
+    a{color:#1A8A63;} a:hover{color:#126346;}
+    .cup{width:1440px;height:900px;padding:28px 32px;overflow:hidden;color:#1D1D1F;
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",system-ui,sans-serif;
+      background:#FCFCFB;
+      display:flex;flex-direction:column;
+      flex:0 0 auto;transform-origin:center center;}
+    .cupCard{background:#FFFFFF;
+      border:1px solid rgba(16,18,24,.07);border-radius:20px;
+      box-shadow:0 1px 2px rgba(16,18,24,.05), 0 10px 28px rgba(16,18,24,.06);
+      padding:18px 20px;display:flex;flex-direction:column;min-width:0;min-height:0;}
+    .cupLabel{font-size:13px;font-weight:500;color:#6E6E73;letter-spacing:-.01em;}
+    .cupTitle{font-size:16px;font-weight:600;letter-spacing:-.018em;color:#1D1D1F;}
+    .cupSub{font-size:12px;font-weight:400;color:#8E8E93;letter-spacing:-.005em;margin-top:2px;}
+    .cupKpi{font-size:38px;font-weight:600;letter-spacing:-.032em;line-height:1.05;color:#1D1D1F;}
+    .pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:590;letter-spacing:-.008em;}
+    .pillUp{background:rgba(26,138,99,.13);color:#0F6B4C;}
+    .pillDown{background:rgba(191,54,42,.12);color:#A03027;}
+    .pillFlat{background:rgba(120,120,128,.12);color:#6E6E73;}
+    .cupRow{display:flex;align-items:center;gap:10px;}
+    .cupBarLab{width:104px;flex:0 0 auto;font-size:12.5px;color:#3A3A3C;letter-spacing:-.008em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .cupTrack{flex:1;height:12px;border-radius:6px;background:rgba(120,120,128,.10);overflow:hidden;}
+    .cupFill{height:100%;border-radius:0 6px 6px 0;}
+    .cupVal{width:52px;flex:0 0 auto;text-align:right;font-size:12.5px;font-weight:600;color:#1D1D1F;letter-spacing:-.01em;}
+    .tile{background:#FFFFFF;border-radius:14px;padding:10px 12px;
+      box-shadow:0 1px 2px rgba(16,18,24,.05), 0 3px 8px rgba(16,18,24,.06);
+      display:flex;flex-direction:column;gap:2px;min-width:0;}
+    .tileLab{font-size:11.5px;color:#6E6E73;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.005em;}
+    .tileNum{font-size:26px;font-weight:600;letter-spacing:-.03em;line-height:1.08;}
+    .legDot{width:9px;height:9px;border-radius:999px;flex:0 0 auto;}
+
+    /* ---- Loading (skeleton) treatment ---- */
+    @keyframes cupShimmer{0%{background-position:-260px 0;}100%{background-position:calc(260px + 100%) 0;}}
+    .skel{display:inline-block;vertical-align:middle;border-radius:7px;color:transparent;
+      background-image:linear-gradient(90deg,rgba(120,120,128,.07) 0%,rgba(120,120,128,.15) 50%,rgba(120,120,128,.07) 100%);
+      background-size:260px 100%;background-repeat:no-repeat;background-color:rgba(120,120,128,.07);
+      animation:cupShimmer 1.5s ease-in-out infinite;}
+    .skelBlock{display:block;}
+    .skelTile{justify-content:center;gap:6px;}
+    @media (prefers-reduced-motion: reduce){ .skel{animation:none;} }
+
+    .cupBtn{background:#1A8A63;color:#FFFFFF;border:none;border-radius:999px;
+      padding:9px 20px;font-size:13px;font-weight:590;letter-spacing:-.008em;cursor:pointer;
+      font-family:inherit;margin-top:6px;}
+    .cupBtn:hover{background:#157553;}
+    .errDetail{font-size:11px;color:#A9A9AE;letter-spacing:-.004em;max-width:460px;
+      word-break:break-word;line-height:1.45;margin-top:2px;}
+
+    /* ---- Tooltip on-hover untuk elemen chart ([data-tt]) ---- */
+    [data-tt]{ transition: filter .06s ease; }
+    [data-tt]:hover{ filter: brightness(.94); }
+    /* Label teks di atas bar/kotak/lingkaran tidak boleh "menutupi" hover —
+       biar kursor selalu jatuh ke bentuk (data-tt) di bawahnya, bukan ke teksnya. */
+    #chartTren text, #chartTreemap text, #chartWaffle text, #chartBubble text{
+      pointer-events:none;}
+    .tip{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;
+      background:#1D1D1F;color:#FFFFFF;padding:7px 10px;border-radius:8px;
+      box-shadow:0 4px 14px rgba(16,18,24,.22);
+      opacity:0;transform:translate(-9999px,-9999px);transition:opacity .08s ease;
+      max-width:220px;}
+    .tip.show{opacity:1;}
+    .tip b{display:block;font-weight:600;font-size:12px;letter-spacing:-.006em;
+      white-space:nowrap;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",system-ui,sans-serif;}
+    .tip span{display:block;color:rgba(255,255,255,.72);font-size:11.5px;margin-top:1px;
+      white-space:nowrap;font-variant-numeric:tabular-nums;
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",system-ui,sans-serif;}
+  </style>
+</head>
+<body>
+<div class="cup">
+
+  <div style="height:44px;flex:0 0 auto;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+    <div>
+      <div style="font-size:24px;font-weight:640;letter-spacing:-.028em;line-height:1.1;">Dashboard Zakat Nasional</div>
+      <div class="cupSub">Pengumpulan &amp; distribusi zakat nasional · Sumber: LPZN BAZNAS&nbsp;</div>
+    </div>
+
+  </div>
+
+  <div id="dash" style="flex:1;display:flex;gap:16px;min-height:0;">
+
+    <div style="width:960px;flex:0 0 960px;display:flex;flex-direction:column;gap:16px;">
+
+      <div style="height:96px;flex:0 0 auto;display:flex;gap:16px;">
+        <div class="cupCard" style="flex:1;justify-content:center;gap:5px;padding:14px 20px;">
+          <div class="cupLabel" id="kpiPengumpulanLabel">Total Pengumpulan 2025</div>
+          <div style="display:flex;align-items:baseline;gap:10px;">
+            <div class="cupKpi" id="kpiPengumpulanVal"><span class="skel" style="width:172px;height:30px;"></span></div>
+            <span class="pill skel" id="kpiPengumpulanPill" style="width:78px;height:22px;"></span>
+          </div>
+        </div>
+        <div class="cupCard" style="flex:1;justify-content:center;gap:5px;padding:14px 20px;">
+          <div class="cupLabel" id="kpiDistribusiLabel">Total Distribusi 2025</div>
+          <div style="display:flex;align-items:baseline;gap:10px;">
+            <div class="cupKpi" id="kpiDistribusiVal"><span class="skel" style="width:172px;height:30px;"></span></div>
+            <span class="pill skel" id="kpiDistribusiPill" style="width:84px;height:22px;"></span>
+          </div>
+        </div>
+        <div class="cupCard" style="flex:1;justify-content:center;gap:4px;padding:14px 20px;">
+          <div class="cupLabel">Rasio Distribusi / Pengumpulan</div>
+          <div class="cupKpi" id="kpiRasioVal"><span class="skel" style="width:112px;height:30px;"></span></div>
+          <div style="font-size:11.5px;color:#8E8E93;letter-spacing:-.005em;">Efektivitas penyaluran dana terhimpun</div>
+        </div>
+      </div>
+
+      <div class="cupCard" style="height:384px;flex:0 0 384px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;height:38px;flex:0 0 auto;">
+          <div>
+            <div class="cupTitle">Tren Pengumpulan</div>
+            <div class="cupSub" id="trenSub">On-balance sheet vs off-balance sheet · 2019 – 2025, Rp Triliun</div>
+          </div>
+          <div style="display:flex;gap:16px;align-items:center;">
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#3A3A3C;"><span class="legDot" style="background:#1A8A63;"></span>On-Balance Sheet</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#3A3A3C;"><span class="legDot" style="background:#9C6A16;"></span>Off-Balance Sheet</div>
+          </div>
+        </div>
+        <div id="chartTren" style="flex:0 0 auto;"><div class="skel skelBlock" style="width:920px;height:292px;margin-top:8px;border-radius:12px;"></div></div>
+      </div>
+
+      <div style="height:272px;flex:0 0 272px;display:flex;gap:16px;">
+        <div class="cupCard" style="flex:1;">
+          <div class="cupTitle">Pengumpulan per Jenis Dana</div>
+          <div class="cupSub" style="margin-bottom:12px;" id="treemapSub">2025, Rp Triliun · luas kotak sebanding nilai</div>
+          <div id="chartTreemap"><div class="skel skelBlock" style="width:432px;height:190px;border-radius:10px;"></div></div>
+        </div>
+        <div class="cupCard" style="flex:1;">
+          <div class="cupTitle">Distribusi per Bidang Program</div>
+          <div class="cupSub" style="margin-bottom:12px;" id="waffleSub">2025, Rp Triliun · 1 kotak = 1% dari <span class="skel" style="width:56px;height:9px;"></span></div>
+          <div id="chartWaffle"><div class="skel skelBlock" style="width:432px;height:190px;border-radius:10px;"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="width:400px;flex:0 0 400px;display:flex;flex-direction:column;gap:16px;">
+      <div class="cupCard" style="height:392px;flex:0 0 392px;">
+        <div class="cupTitle">Sebaran Pengelola Zakat</div>
+        <div class="cupSub" style="margin-bottom:12px;" id="tilesSub">Jumlah lembaga 2025 &amp; perubahan vs 2024</div>
+        <div style="display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:10px;flex:1;" id="tilesGrid">
+          <div class="tile skelTile"><span class="skel" style="width:18px;height:18px;border-radius:5px;"></span><span class="skel" style="width:76px;height:10px;"></span><span class="skel" style="width:48px;height:20px;"></span><span class="skel" style="width:64px;height:10px;"></span></div>
+          <div class="tile skelTile"><span class="skel" style="width:18px;height:18px;border-radius:5px;"></span><span class="skel" style="width:76px;height:10px;"></span><span class="skel" style="width:48px;height:20px;"></span><span class="skel" style="width:64px;height:10px;"></span></div>
+          <div class="tile skelTile"><span class="skel" style="width:18px;height:18px;border-radius:5px;"></span><span class="skel" style="width:76px;height:10px;"></span><span class="skel" style="width:48px;height:20px;"></span><span class="skel" style="width:64px;height:10px;"></span></div>
+          <div class="tile skelTile"><span class="skel" style="width:18px;height:18px;border-radius:5px;"></span><span class="skel" style="width:76px;height:10px;"></span><span class="skel" style="width:48px;height:20px;"></span><span class="skel" style="width:64px;height:10px;"></span></div>
+          <div class="tile skelTile"><span class="skel" style="width:18px;height:18px;border-radius:5px;"></span><span class="skel" style="width:76px;height:10px;"></span><span class="skel" style="width:48px;height:20px;"></span><span class="skel" style="width:64px;height:10px;"></span></div>
+          <div class="tile skelTile"><span class="skel" style="width:18px;height:18px;border-radius:5px;"></span><span class="skel" style="width:76px;height:10px;"></span><span class="skel" style="width:48px;height:20px;"></span><span class="skel" style="width:64px;height:10px;"></span></div>
+        </div>
+      </div>
+
+      <div class="cupCard" style="height:376px;flex:0 0 376px;">
+        <div class="cupTitle">Pengumpulan per Jenis Pengelola</div>
+        <div class="cupSub" style="margin-bottom:12px;" id="bubbleSub">2025, Rp Triliun · luas lingkaran sebanding nilai</div>
+        <div id="chartBubble"><div class="skel skelBlock" style="width:360px;height:288px;border-radius:14px;"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="errBox" style="display:none;flex:1;align-items:center;justify-content:center;min-height:0;">
+    <div class="cupCard" style="max-width:540px;align-items:center;text-align:center;gap:6px;padding:32px 36px;">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#A03027" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:6px;"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><circle cx="12" cy="16.4" r="0.9" fill="#A03027" stroke="none"></circle></svg>
+      <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Data tidak dapat dimuat</div>
+      <div class="cupSub" style="font-size:12.5px;">Terjadi kendala saat mengambil data dari sumber. Periksa koneksi Anda, lalu muat ulang halaman.</div>
+      <div class="errDetail" id="errDetail"></div>
+      <button class="cupBtn" type="button" id="errRetry">Muat ulang</button>
+    </div>
+  </div>
+</div>
+
+<div class="tip" id="tip"><b></b><span></span></div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* =========================================================================
+     1. FORMAT — satu set helper untuk seluruh halaman (format Indonesia:
+        koma sebagai pemisah desimal, titik sebagai pemisah ribuan).
+     ========================================================================= */
+
+  function isNum(v) {
+    return typeof v === 'number' && isFinite(v);
+  }
+
+  /** 44.698 -> "44,70" ; 1234.5 -> "1.234,5" */
+  function fmtDec(v, dec) {
+    if (!isNum(v)) return '–';
+    var s = Math.abs(v).toFixed(dec);
+    var parts = s.split('.');
+    var intPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    var out = parts.length > 1 ? intPart + ',' + parts[1] : intPart;
+    return (v < 0 ? '-' : '') + out;
+  }
+
+  /** 44.698 -> "Rp44,70 T" */
+  function fmtRp(v, dec) {
+    return isNum(v) ? 'Rp' + fmtDec(v, dec) + ' T' : '–';
+  }
+
+  /** 99.083 -> "99,1%" */
+  function fmtPct(v, dec) {
+    return isNum(v) ? fmtDec(v, dec) + '%' : '–';
+  }
+
+  /** 508 -> "508" */
+  function fmtInt(v) {
+    return fmtDec(v, 0);
+  }
+
+  function glyph(d) {
+    return d > 0 ? '▲' : (d < 0 ? '▼' : '—');
+  }
+
+  /** Koordinat SVG: bulatkan ke 2 desimal, buang nol di belakang. */
+  function n(v) {
+    return String(Math.round(v * 100) / 100);
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  /**
+   * Perkiraan lebar teks (SF Pro) — dipakai untuk memutuskan label muat/tidak.
+   * Faktor 0.58 diambil dari pengukuran getBBox() pada label nyata di halaman
+   * ini (kisaran 0.50–0.62 per karakter, tergantung glif). Sengaja dipasang di
+   * sisi atas kisaran supaya keputusan "muat/tidak" cenderung aman: label yang
+   * meragukan diturunkan tingkatnya, bukan dibiarkan meluber.
+   */
+  function textW(s, fs) {
+    return String(s).length * fs * 0.58;
+  }
+
+  var SVGF = '-apple-system,system-ui,sans-serif';
+
+  /* =========================================================================
+     2. PALET — warna dipetakan dari LABEL (bukan urutan), supaya stabil
+        walau peringkat kategori berubah.
+     ========================================================================= */
+
+  var GREEN = '#1A8A63', BLUE = '#3B74D5', GOLD = '#A9761F',
+      PURPLE = '#8C5BC4', CORAL = '#B5533F', TEAL = '#2A8A94',
+      GOLD_DEEP = '#9C6A16';
+
+  var FALLBACK = [GREEN, BLUE, GOLD, PURPLE, CORAL, TEAL];
+
+  var COLOR_DANA = {
+    'Zakat Mal': GREEN, 'Infak/Sedekah': BLUE,
+    'DSKL+Kurban': GOLD, 'Zakat Fitrah': PURPLE
+  };
+  var COLOR_PROGRAM = {
+    'Kemanusiaan': GREEN, 'Dakwah-Advokasi': BLUE, 'Pendidikan': GOLD,
+    'Ekonomi': PURPLE, 'Kesehatan': CORAL
+  };
+  var COLOR_PENGELOLA = {
+    'LAZ Nasional': GREEN, 'Baznas Kab/Kota': BLUE, 'Baznas Nasional': GOLD,
+    'Baznas Provinsi': PURPLE, 'LAZ Provinsi': CORAL, 'LAZ Kab/Kota': TEAL
+  };
+
+  function colorFor(map, label, i) {
+    return map[label] || FALLBACK[i % FALLBACK.length];
+  }
+
+  /** Ikon lembaga (18x18, stroke) — dipetakan per label institusi. */
+  var TILE_ICON = {
+    'Baznas Nasional': { stroke: GREEN, path: '<path d="M3 21h18M6 21V7l6-3v17M12 21V11l6 2v8"></path>' },
+    'Baznas Provinsi': { stroke: GREEN, path: '<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"></path>' },
+    'Baznas Kab/Kota': { stroke: GREEN, path: '<path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"></path><circle cx="12" cy="10" r="2.5"></circle>' },
+    'LAZ Nasional': { stroke: BLUE, path: '<circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"></path>' },
+    'LAZ Provinsi': { stroke: BLUE, path: '<path d="M12 3 3 8l9 5 9-5-9-5zM3 12.5l9 5 9-5M3 17l9 5 9-5"></path>' },
+    'LAZ Kab/Kota': { stroke: BLUE, path: '<rect x="3.5" y="3.5" width="7" height="7" rx="1.6"></rect><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"></rect><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"></rect><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"></rect>' }
+  };
+  var ICON_DEFAULT = { stroke: GREEN, path: '<path d="M3 21h18M6 21V7l6-3v17M12 21V11l6 2v8"></path>' };
+
+  /* =========================================================================
+     3. UTIL DATA
+     ========================================================================= */
+
+  /** Objek {label: nilai} -> [{label, value}] terurut menurun, nilai kosong dibuang. */
+  function toPairs(obj) {
+    var out = [];
+    if (!obj) return out;
+    Object.keys(obj).forEach(function (k) {
+      var v = obj[k];
+      if (isNum(v) && v > 0) out.push({ label: k, value: v });
+    });
+    out.sort(function (a, b) { return b.value - a.value; });
+    return out;
+  }
+
+  /** Sumbu "bulat": 32.82 dengan 4 langkah -> {step:10, max:40}. */
+  function niceAxis(maxVal, steps) {
+    if (!isNum(maxVal) || maxVal <= 0) return { step: 1, max: steps };
+    var rough = maxVal / steps;
+    var pow = Math.pow(10, Math.floor(Math.log(rough) / Math.LN10));
+    var norm = rough / pow;
+    var mult = norm <= 1 ? 1 : norm <= 2 ? 2 : norm <= 2.5 ? 2.5 : norm <= 5 ? 5 : 10;
+    var step = mult * pow;
+    return { step: step, max: step * steps };
+  }
+
+  /* =========================================================================
+     4. GRAFIK 1 — Tren Pengumpulan (kolom berpasangan)
+     ========================================================================= */
+
+  var TREN = {
+    W: 920, H: 292,
+    x0: 46, x1: 908,      // area plot
+    yBase: 238, yTop: 14, // garis 0 dan garis teratas
+    lines: 5, barW: 38, gap: 6, radius: 4
+  };
+
+  function barPath(x, w, h, yBase, radius) {
+    if (!(h > 0)) return '';
+    var r = Math.min(radius, w / 2, h);
+    var t = yBase - h;
+    return 'M' + n(x) + ',' + n(yBase) +
+      ' L' + n(x) + ',' + n(t + r) +
+      ' Q' + n(x) + ',' + n(t) + ' ' + n(x + r) + ',' + n(t) +
+      ' L' + n(x + w - r) + ',' + n(t) +
+      ' Q' + n(x + w) + ',' + n(t) + ' ' + n(x + w) + ',' + n(t + r) +
+      ' L' + n(x + w) + ',' + n(yBase) + ' Z';
+  }
+
+  function buildTren(tren) {
+    var C = TREN;
+    var years = (tren && tren.years && tren.years.length) ? tren.years.slice() : [];
+    var on = (tren && tren.onBalance) || {};
+    var off = (tren && tren.offBalance) || {};
+    if (!years.length) return '';
+
+    var maxVal = 0;
+    years.forEach(function (y) {
+      if (isNum(on[y]) && on[y] > maxVal) maxVal = on[y];
+      if (isNum(off[y]) && off[y] > maxVal) maxVal = off[y];
+    });
+
+    var steps = C.lines - 1;
+    var axis = niceAxis(maxVal, steps);
+    var plotH = C.yBase - C.yTop;
+    var scale = plotH / axis.max;
+    var stepPx = plotH / steps;
+    var axisIsInt = Math.abs(axis.step - Math.round(axis.step)) < 1e-9;
+
+    var s = [];
+    s.push('<svg width="' + C.W + '" height="' + C.H + '" viewBox="0 0 ' + C.W + ' ' + C.H + '" style="display:block;margin-top:8px;">');
+
+    // Gridlines
+    s.push('<g stroke="#E1E1E6" stroke-width="1">');
+    for (var i = 0; i < C.lines; i++) {
+      var gy = C.yBase - i * stepPx;
+      s.push('<line x1="' + C.x0 + '" y1="' + n(gy) + '" x2="' + C.x1 + '" y2="' + n(gy) + '"></line>');
+    }
+    s.push('</g>');
+
+    // Label sumbu Y
+    s.push('<g font-size="11" fill="#8E8E93" text-anchor="end" font-family="' + SVGF + '" font-variant-numeric="tabular-nums">');
+    for (var j = 0; j < C.lines; j++) {
+      var v = axis.step * j;
+      var ly = C.yBase - j * stepPx + 3.5;
+      s.push('<text x="' + (C.x0 - 10) + '" y="' + n(ly) + '">' + esc(axisIsInt ? String(Math.round(v)) : fmtDec(v, 1)) + '</text>');
+    }
+    s.push('</g>');
+
+    // Kolom
+    var band = (C.x1 - C.x0) / years.length;
+    var barW = Math.min(C.barW, Math.max(4, (band - C.gap - 8) / 2));
+    var pairW = barW * 2 + C.gap;
+    var last = years.length - 1;
+    var lastGeom = null;
+
+    years.forEach(function (y, idx) {
+      var px = C.x0 + idx * band + (band - pairW) / 2;
+      var onX = px, offX = px + barW + C.gap;
+      var onVal = on[y], offVal = off[y];
+      var onH = isNum(onVal) ? Math.max(0, onVal) * scale : 0;
+      var offH = isNum(offVal) ? Math.max(0, offVal) * scale : 0;
+      var op = idx === last ? '' : ' fill-opacity="0.28"';
+
+      var p1 = barPath(onX, barW, onH, C.yBase, C.radius);
+      if (p1) s.push('<path d="' + p1 + '" fill="' + GREEN + '"' + op +
+        ' class="tt" data-tt="' + esc(y + ' · On-Balance Sheet') + '" data-tv="' + esc(fmtRp(onVal, 2)) + '"></path>');
+      var p2 = barPath(offX, barW, offH, C.yBase, C.radius);
+      if (p2) s.push('<path d="' + p2 + '" fill="' + GOLD_DEEP + '"' + op +
+        ' class="tt" data-tt="' + esc(y + ' · Off-Balance Sheet') + '" data-tv="' + esc(fmtRp(offVal, 2)) + '"></path>');
+
+      if (idx === last) {
+        lastGeom = {
+          onCx: onX + barW / 2, onTop: C.yBase - onH, onVal: onVal,
+          offCx: offX + barW / 2, offTop: C.yBase - offH, offVal: offVal
+        };
+      }
+    });
+
+    // Label nilai — hanya tahun terakhir
+    if (lastGeom) {
+      s.push('<g font-size="12" font-weight="600" fill="#1D1D1F" text-anchor="middle" font-family="' + SVGF + '" font-variant-numeric="tabular-nums">');
+      if (isNum(lastGeom.onVal)) {
+        s.push('<text x="' + n(lastGeom.onCx) + '" y="' + n(lastGeom.onTop - 7) + '">' + esc(fmtDec(lastGeom.onVal, 2)) + '</text>');
+      }
+      if (isNum(lastGeom.offVal)) {
+        s.push('<text x="' + n(lastGeom.offCx) + '" y="' + n(lastGeom.offTop - 7) + '">' + esc(fmtDec(lastGeom.offVal, 2)) + '</text>');
+      }
+      s.push('</g>');
+    }
+
+    // Label tahun
+    s.push('<g font-size="11.5" fill="#8E8E93" text-anchor="middle" font-family="' + SVGF + '" font-variant-numeric="tabular-nums">');
+    years.forEach(function (y, idx) {
+      var cx = C.x0 + idx * band + band / 2;
+      var extra = idx === last ? ' fill="#1D1D1F" font-weight="600"' : '';
+      s.push('<text x="' + n(cx) + '" y="262"' + extra + '>' + esc(y) + '</text>');
+    });
+    s.push('</g>');
+
+    s.push('<text x="' + C.x0 + '" y="285" font-size="11.5" fill="#8E8E93" font-family="' + SVGF + '">' +
+      'Off-balance sheet: dana ZISDSKL yang dihimpun &amp; disalurkan langsung oleh UPZ/mitra pengelola, di luar neraca resmi lembaga.' +
+      '</text>');
+
+    s.push('</svg>');
+    return s.join('');
+  }
+
+  /* =========================================================================
+     5. GRAFIK 2 — Treemap (squarified, Bruls/Huizing/van Wijk)
+     ========================================================================= */
+
+  function worstRatio(row, shortest, scale) {
+    var sum = 0, mn = Infinity, mx = -Infinity;
+    for (var i = 0; i < row.length; i++) {
+      var v = row[i].value;
+      sum += v;
+      if (v < mn) mn = v;
+      if (v > mx) mx = v;
+    }
+    if (sum <= 0) return Infinity;
+    var thickness = (sum * scale) / shortest;
+    if (thickness <= 0) return Infinity;
+    var lenMax = shortest * (mx / sum);
+    var lenMin = shortest * (mn / sum);
+    var r1 = Math.max(thickness / lenMax, lenMax / thickness);
+    var r2 = Math.max(thickness / lenMin, lenMin / thickness);
+    return Math.max(r1, r2);
+  }
+
+  function squarify(items, x, y, w, h) {
+    var out = [];
+    var remaining = items.slice().filter(function (d) { return d.value > 0; })
+      .sort(function (a, b) { return b.value - a.value; });
+    var rect = { x: x, y: y, w: w, h: h };
+    var guard = 0;
+
+    while (remaining.length && guard++ < 500) {
+      var totalRem = 0, i;
+      for (i = 0; i < remaining.length; i++) totalRem += remaining[i].value;
+      var area = rect.w * rect.h;
+      if (totalRem <= 0 || area <= 0) break;
+
+      var scale = area / totalRem;
+      var shortest = Math.min(rect.w, rect.h);
+
+      var row = [remaining[0]];
+      var idx = 1;
+      while (idx < remaining.length) {
+        var cand = row.concat([remaining[idx]]);
+        if (worstRatio(cand, shortest, scale) <= worstRatio(row, shortest, scale)) {
+          row = cand; idx++;
+        } else break;
+      }
+
+      var rowSum = 0;
+      for (i = 0; i < row.length; i++) rowSum += row[i].value;
+      var thickness = (rowSum * scale) / shortest;
+      var pos = 0;
+
+      if (rect.w >= rect.h) {
+        for (i = 0; i < row.length; i++) {
+          var hh = (row[i].value / rowSum) * rect.h;
+          out.push({ item: row[i], x: rect.x, y: rect.y + pos, w: thickness, h: hh });
+          pos += hh;
+        }
+        rect.x += thickness; rect.w -= thickness;
+      } else {
+        for (i = 0; i < row.length; i++) {
+          var ww = (row[i].value / rowSum) * rect.w;
+          out.push({ item: row[i], x: rect.x + pos, y: rect.y, w: ww, h: thickness });
+          pos += ww;
+        }
+        rect.y += thickness; rect.h -= thickness;
+      }
+      remaining = remaining.slice(row.length);
+    }
+    return out;
+  }
+
+  var TREEMAP = { W: 432, H: 190, inset: 1.5, rx: 7 };
+
+  function buildTreemap(obj) {
+    var C = TREEMAP;
+    var pairs = toPairs(obj);
+    if (!pairs.length) return '';
+
+    var cells = squarify(pairs, 0, 0, C.W, C.H);
+    var treemapTotal = pairs.reduce(function (a, p) { return a + p.value; }, 0);
+    var s = ['<svg width="' + C.W + '" height="' + C.H + '" viewBox="0 0 ' + C.W + ' ' + C.H + '" style="display:block;">'];
+
+    cells.forEach(function (c, i) {
+      var x = c.x + C.inset, y = c.y + C.inset;
+      var w = c.w - C.inset * 2, h = c.h - C.inset * 2;
+      if (w <= 0 || h <= 0) return;
+      var fill = colorFor(COLOR_DANA, c.item.label, i);
+      var share = treemapTotal > 0 ? Math.round(c.item.value / treemapTotal * 100) : 0;
+      s.push('<rect x="' + n(x) + '" y="' + n(y) + '" width="' + n(w) + '" height="' + n(h) +
+        '" rx="' + C.rx + '" fill="' + fill + '" class="tt" data-tt="' + esc(c.item.label) +
+        '" data-tv="' + esc(fmtRp(c.item.value, 2) + ' · ' + share + '%') + '"></rect>');
+
+      var name = c.item.label;
+      var val = fmtDec(c.item.value, 2);
+
+      // Tiga tingkat label; lewati nilai (atau seluruh teks) kalau kotaknya
+      // terlalu kecil, daripada membiarkan teks meluber keluar kotak.
+      var fitsLarge = w >= 90 && h >= 60 && textW(name, 11.5) <= w - 24;
+      var fitsCompact = w >= 56 && h >= 30 && textW(name, 10.5) <= w - 22;
+
+      if (fitsLarge) {
+        s.push('<text x="' + n(x + 14) + '" y="' + n(y + 24.5) + '" font-size="11.5" font-weight="600" fill="#FFFFFF" font-family="' + SVGF + '">' + esc(name) + '</text>');
+        s.push('<text x="' + n(x + 14) + '" y="' + n(y + 43.5) + '" font-size="15" font-weight="600" fill="#FFFFFF" fill-opacity="0.9" font-family="' + SVGF + '" font-variant-numeric="tabular-nums">' + esc(val) + '</text>');
+      } else if (fitsCompact) {
+        s.push('<text x="' + n(x + 13) + '" y="' + n(y + 16) + '" font-size="10.5" font-weight="600" fill="#FFFFFF" font-family="' + SVGF + '">' + esc(name) + '</text>');
+        s.push('<text x="' + n(x + 13) + '" y="' + n(y + 29) + '" font-size="11.5" font-weight="600" fill="#FFFFFF" font-family="' + SVGF + '" font-variant-numeric="tabular-nums">' + esc(val) + '</text>');
+      } else if (w >= 40 && h >= 16 && textW(name, 9.5) <= w - 12) {
+        s.push('<text x="' + n(x + 8) + '" y="' + n(y + 13) + '" font-size="9.5" font-weight="600" fill="#FFFFFF" font-family="' + SVGF + '">' + esc(name) + '</text>');
+      }
+    });
+
+    s.push('</svg>');
+    return s.join('');
+  }
+
+  /* =========================================================================
+     6. GRAFIK 3 — Waffle 10x10 + legenda
+     ========================================================================= */
+
+  var WAFFLE = { W: 432, H: 190, cols: 10, rows: 10, cell: 15.4, pitch: 18.4, y0: 4, rx: 3, legX: 214 };
+
+  /** Bulatkan persentase ke bilangan bulat yang totalnya tepat 100 (largest remainder). */
+  function largestRemainder(values, total) {
+    var n0 = values.length;
+    var raw = [], floors = [], sum = 0, i;
+    for (i = 0; i < n0; i++) {
+      var pct = total > 0 ? (values[i] / total) * 100 : 0;
+      raw.push(pct);
+      var f = Math.floor(pct);
+      floors.push(f);
+      sum += f;
+    }
+    var left = 100 - sum;
+    var order = [];
+    for (i = 0; i < n0; i++) order.push({ i: i, rem: raw[i] - floors[i] });
+    order.sort(function (a, b) {
+      if (b.rem !== a.rem) return b.rem - a.rem;
+      return a.i - b.i;
+    });
+    for (i = 0; i < left && i < order.length; i++) floors[order[i].i] += 1;
+    // Kalau kategori lebih sedikit dari sisa (jarang), buang kelebihan dari yang terkecil.
+    while (left < 0) { /* defensif: tidak terjadi dengan floor() */ break; }
+    return floors;
+  }
+
+  function buildWaffle(obj, total) {
+    var C = WAFFLE;
+    var pairs = toPairs(obj);
+    if (!pairs.length) return '';
+
+    var sum = isNum(total) && total > 0 ? total : pairs.reduce(function (a, p) { return a + p.value; }, 0);
+    var counts = largestRemainder(pairs.map(function (p) { return p.value; }), sum);
+
+    var s = ['<svg width="' + C.W + '" height="' + C.H + '" viewBox="0 0 ' + C.W + ' ' + C.H + '" style="display:block;">'];
+
+    // Kotak — urutan baca (row-major), dikelompokkan sesuai urutan legenda.
+    var cellIdx = 0;
+    pairs.forEach(function (p, ci) {
+      var fill = colorFor(COLOR_PROGRAM, p.label, ci);
+      var tt = esc(p.label);
+      var tv = esc(counts[ci] + '% · ' + fmtRp(p.value, 2));
+      for (var k = 0; k < counts[ci] && cellIdx < C.cols * C.rows; k++, cellIdx++) {
+        var row = Math.floor(cellIdx / C.cols), col = cellIdx % C.cols;
+        s.push('<rect x="' + n(col * C.pitch) + '" y="' + n(C.y0 + row * C.pitch) +
+          '" width="' + C.cell + '" height="' + C.cell + '" rx="' + C.rx + '" fill="' + fill +
+          '" class="tt" data-tt="' + tt + '" data-tv="' + tv + '"></rect>');
+      }
+    });
+
+    // Legenda
+    var step = pairs.length <= 5 ? 38 : (176 / Math.max(1, pairs.length - 1));
+    pairs.forEach(function (p, ci) {
+      var cy = 14 + ci * step;
+      var fill = colorFor(COLOR_PROGRAM, p.label, ci);
+      s.push('<circle cx="' + C.legX + '" cy="' + n(cy) + '" r="4.5" fill="' + fill + '"></circle>');
+      s.push('<text x="' + (C.legX + 15) + '" y="' + n(cy + 4) + '" font-size="11.5" fill="#1D1D1F" font-family="' + SVGF + '">' + esc(p.label) + '</text>');
+      s.push('<text x="' + (C.legX + 15) + '" y="' + n(cy + 19) + '" font-size="10.5" fill="#8E8E93" font-family="' + SVGF + '" font-variant-numeric="tabular-nums">' +
+        esc(counts[ci] + '% · ' + fmtRp(p.value, 2)) + '</text>');
+    });
+
+    s.push('</svg>');
+    return s.join('');
+  }
+
+  /* =========================================================================
+     7. GRAFIK 4 — Bubble / circle packing
+        Luas lingkaran sebanding nilai (r ∝ √v). Posisi dihitung dengan
+        penempatan greedy: tiap lingkaran ditempel menyinggung lingkaran yang
+        sudah ada, pada posisi yang membuat bounding box paling pas dengan
+        rasio kartu — lalu seluruh susunan di-scale agar mengisi kartu.
+     ========================================================================= */
+
+  var BUBBLE = { W: 360, H: 288, padX: 14, padY: 14, padBottom: 26, angles: 180 };
+
+  function bboxOf(placed, cx, cy, cr) {
+    var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for (var i = 0; i < placed.length; i++) {
+      var p = placed[i];
+      if (p.x - p.r < minX) minX = p.x - p.r;
+      if (p.y - p.r < minY) minY = p.y - p.r;
+      if (p.x + p.r > maxX) maxX = p.x + p.r;
+      if (p.y + p.r > maxY) maxY = p.y + p.r;
+    }
+    if (arguments.length > 1) {
+      if (cx - cr < minX) minX = cx - cr;
+      if (cy - cr < minY) minY = cy - cr;
+      if (cx + cr > maxX) maxX = cx + cr;
+      if (cy + cr > maxY) maxY = cy + cr;
+    }
+    return { minX: minX, minY: minY, maxX: maxX, maxY: maxY, w: maxX - minX, h: maxY - minY };
+  }
+
+  function packCircles(items, targetW, targetH) {
+    var placed = [];
+    var ANG = BUBBLE.angles;
+
+    items.forEach(function (it, idx) {
+      var r = it.r;
+      if (idx === 0) { placed.push({ x: 0, y: 0, r: r, item: it }); return; }
+
+      var best = null;
+      for (var j = 0; j < placed.length; j++) {
+        var p = placed[j], d = p.r + r;
+        for (var a = 0; a < ANG; a++) {
+          var th = a * 2 * Math.PI / ANG;
+          var cx = p.x + d * Math.cos(th), cy = p.y + d * Math.sin(th);
+
+          var ok = true;
+          for (var k = 0; k < placed.length; k++) {
+            var q = placed[k];
+            var dx = cx - q.x, dy = cy - q.y;
+            var min = q.r + r - 1e-6;
+            if (dx * dx + dy * dy < min * min) { ok = false; break; }
+          }
+          if (!ok) continue;
+
+          var bb = bboxOf(placed, cx, cy, r);
+          var score = Math.max(bb.w / targetW, bb.h / targetH);
+          if (best === null || score < best.score - 1e-9) best = { x: cx, y: cy, score: score };
+        }
+      }
+      if (!best) {
+        // Jalur aman: taruh di kanan bounding box saat ini.
+        var bb2 = bboxOf(placed);
+        best = { x: bb2.maxX + r, y: (bb2.minY + bb2.maxY) / 2 };
+      }
+      placed.push({ x: best.x, y: best.y, r: r, item: it });
+    });
+
+    return placed;
+  }
+
+  function wrap2(name) {
+    var parts = String(name).split(' ');
+    if (parts.length < 2) return [name];
+    return [parts[0], parts.slice(1).join(' ')];
+  }
+
+  function boxesHit(a, b) {
+    return !(a.x + a.w < b.x || b.x + b.w < a.x || a.y + a.h < b.y || b.y + b.h < a.y);
+  }
+
+  /**
+   * Pilih arah label luar: mengarah keluar dari pusat, tetap di dalam viewBox,
+   * tidak menabrak lingkaran lain, dan tidak menabrak label luar yang sudah dipasang.
+   */
+  function placeExternal(c, circles, W, H, text, fs, taken) {
+    var tw = textW(text, fs), th = fs * 1.2;
+    var outAng = Math.atan2(c.cy - H / 2, c.cx - W / 2);
+    var LENS = [10, 15, 21, 28, 36];
+    var STEPS = 24; // sudut tiap 15°
+
+    /** Kandidat pada sudut `ang` dengan panjang penunjuk `L`. */
+    function candidate(ang, L) {
+      var g = 3;
+      var cos = Math.cos(ang), sin = Math.sin(ang);
+      var x1 = c.cx + c.r * cos, y1 = c.cy + c.r * sin;
+      var x2 = c.cx + (c.r + L) * cos, y2 = c.cy + (c.r + L) * sin;
+      if (Math.abs(cos) > 0.5) {
+        // penunjuk mendatar — teks di samping
+        var right = cos > 0;
+        var tx = x2 + (right ? g : -g);
+        var ty = y2 + fs / 3;
+        return { x1: x1, y1: y1, x2: x2, y2: y2, tx: tx, ty: ty,
+          anchor: right ? 'start' : 'end',
+          box: { x: right ? tx : tx - tw, y: ty - fs, w: tw, h: th } };
+      }
+      // penunjuk tegak — teks di atas/bawah, rata tengah
+      var down = sin > 0;
+      var tyv = down ? y2 + 12 : y2 - 5;
+      return { x1: x1, y1: y1, x2: x2, y2: y2, tx: x2, ty: tyv, anchor: 'middle',
+        box: { x: x2 - tw / 2, y: tyv - fs, w: tw, h: th } };
+    }
+
+    function boxOk(b) {
+      if (b.x < 2 || b.y < 2 || b.x + b.w > W - 2 || b.y + b.h > H - 2) return false;
+      var i;
+      for (i = 0; i < circles.length; i++) {
+        var o = circles[i];
+        if (o === c) continue;
+        var nx = Math.max(b.x, Math.min(o.cx, b.x + b.w));
+        var ny = Math.max(b.y, Math.min(o.cy, b.y + b.h));
+        var dx = o.cx - nx, dy = o.cy - ny;
+        if (dx * dx + dy * dy < o.r * o.r) return false;
+      }
+      for (i = 0; taken && i < taken.length; i++) {
+        if (boxesHit(b, taken[i])) return false;
+      }
+      return true;
+    }
+
+    // Pilih kandidat valid dengan skor terbaik: sedekat mungkin ke arah keluar
+    // dari pusat, dengan penunjuk sependek mungkin.
+    var best = null;
+    for (var li = 0; li < LENS.length; li++) {
+      for (var a = 0; a < STEPS; a++) {
+        var ang = a * 2 * Math.PI / STEPS;
+        var cand = candidate(ang, LENS[li]);
+        if (!boxOk(cand.box)) continue;
+        var dA = Math.abs(Math.atan2(Math.sin(ang - outAng), Math.cos(ang - outAng)));
+        var score = dA + (LENS[li] - LENS[0]) * 0.03;
+        if (best === null || score < best.score - 1e-9) {
+          cand.score = score;
+          best = cand;
+        }
+      }
+    }
+    if (best) return best;
+
+    // Cadangan: arah keluar, penunjuk terpanjang, teks dipaksa tetap di dalam bingkai.
+    var fb = candidate(outAng, LENS[LENS.length - 1]);
+    fb.tx = Math.max(4 + (fb.anchor === 'start' ? 0 : tw / 2), Math.min(W - 4, fb.tx));
+    fb.ty = Math.max(12, Math.min(H - 4, fb.ty));
+    return fb;
+  }
+
+  function buildBubble(obj) {
+    var C = BUBBLE;
+    var pairs = toPairs(obj);
+    if (!pairs.length) return '';
+
+    pairs.forEach(function (p) { p.r = Math.sqrt(p.value); });
+
+    var availW = C.W - C.padX * 2;
+    var availH = C.H - C.padY - C.padBottom;
+
+    var placed = packCircles(pairs, availW, availH);
+    var bb = bboxOf(placed);
+    var scale = Math.min(bb.w > 0 ? availW / bb.w : 1, bb.h > 0 ? availH / bb.h : 1);
+
+    var offX = C.padX + (availW - bb.w * scale) / 2 - bb.minX * scale;
+    var offY = C.padY + (availH - bb.h * scale) / 2 - bb.minY * scale;
+
+    var circles = placed.map(function (p, i) {
+      return {
+        cx: p.x * scale + offX, cy: p.y * scale + offY, r: p.r * scale,
+        label: p.item.label, value: p.item.value,
+        fill: colorFor(COLOR_PENGELOLA, p.item.label, i)
+      };
+    });
+
+    var s = ['<svg width="' + C.W + '" height="' + C.H + '" viewBox="0 0 ' + C.W + ' ' + C.H + '" style="display:block;">'];
+    var leaders = [];
+
+    circles.forEach(function (c) {
+      s.push('<circle cx="' + n(c.cx) + '" cy="' + n(c.cy) + '" r="' + n(c.r) + '" fill="' + c.fill +
+        '" class="tt" data-tt="' + esc(c.label) + '" data-tv="' + esc(fmtRp(c.value, 2)) + '"></circle>');
+
+      var val = fmtDec(c.value, 2);
+      var r = c.r;
+      var nfs, vfs, vdy;
+      if (r >= 70) { nfs = 12.5; vfs = 21; vdy = 18; }
+      else if (r >= 44) { nfs = 11; vfs = 17; vdy = 16; }
+      else if (r >= 30) { nfs = 10.5; vfs = 14; vdy = 16; }
+      else if (r >= 20) { nfs = 0; vfs = 12; vdy = 4; }
+      else if (r >= 13) { nfs = 0; vfs = 11; vdy = 4; }
+      else { nfs = 0; vfs = 0; vdy = 0; }
+
+      var lines = null;
+      if (nfs) {
+        var chord1 = 2 * Math.sqrt(Math.max(0, r * r - 36)) - 8;
+        if (textW(c.label, nfs) <= chord1) {
+          lines = [c.label];
+        } else {
+          var two = wrap2(c.label);
+          var longest = 0;
+          two.forEach(function (t) { longest = Math.max(longest, textW(t, nfs)); });
+          var chord2 = 2 * Math.sqrt(Math.max(0, r * r - 100)) - 8;
+          if (two.length === 2 && longest <= chord2) lines = two;
+        }
+      }
+
+      function txt(x, y, fs, fill, weight, opacity, content) {
+        return '<text x="' + n(x) + '" y="' + n(y) + '" font-size="' + fs + '"' +
+          (weight ? ' font-weight="' + weight + '"' : '') +
+          ' fill="' + fill + '"' + (opacity ? ' fill-opacity="' + opacity + '"' : '') +
+          ' text-anchor="middle" font-family="' + SVGF + '"' +
+          (content.isNum ? ' font-variant-numeric="tabular-nums"' : '') + '>' + esc(content.text) + '</text>';
+      }
+
+      if (lines && lines.length === 1) {
+        s.push(txt(c.cx, c.cy - 6, nfs, '#FFFFFF', null, '0.92', { text: lines[0] }));
+        s.push(txt(c.cx, c.cy + vdy, vfs, '#FFFFFF', '600', null, { text: val, isNum: true }));
+      } else if (lines && lines.length === 2) {
+        s.push(txt(c.cx, c.cy - 9, nfs, '#FFFFFF', null, '0.92', { text: lines[0] }));
+        s.push(txt(c.cx, c.cy + 2, nfs, '#FFFFFF', null, '0.92', { text: lines[1] }));
+        s.push(txt(c.cx, c.cy + 19, vfs, '#FFFFFF', '600', null, { text: val, isNum: true }));
+      } else if (vfs) {
+        // Terlalu kecil untuk memuat nama: nilai di dalam, nama di luar (garis penunjuk).
+        s.push(txt(c.cx, c.cy + 4, vfs, '#FFFFFF', '600', null, { text: val, isNum: true }));
+        leaders.push(c);
+      } else {
+        leaders.push(c);
+      }
+    });
+
+    var takenBoxes = [];
+    leaders.forEach(function (c) {
+      var fs = 10.5;
+      var p = placeExternal(c, circles, C.W, C.H, c.label, fs, takenBoxes);
+      if (p.box) takenBoxes.push(p.box);
+      s.push('<line x1="' + n(p.x1) + '" y1="' + n(p.y1) + '" x2="' + n(p.x2) + '" y2="' + n(p.y2) + '" stroke="#C7C7CC" stroke-width="1"></line>');
+      s.push('<text x="' + n(p.tx) + '" y="' + n(p.ty) + '" font-size="' + fs + '" fill="#3A3A3C"' +
+        (p.anchor === 'middle' ? ' text-anchor="middle"' : (p.anchor === 'end' ? ' text-anchor="end"' : '')) +
+        ' font-family="' + SVGF + '">' + esc(c.label) + '</text>');
+    });
+
+    s.push('</svg>');
+    return s.join('');
+  }
+
+  /* =========================================================================
+     8. TILE — Sebaran Pengelola Zakat
+     ========================================================================= */
+
+  function buildTiles(list, prevYear) {
+    if (!list || !list.length) return '';
+    return list.map(function (d) {
+      var ico = TILE_ICON[d.label] || ICON_DEFAULT;
+      var delta = d.delta;
+      var deltaHtml;
+      if (isNum(delta) && delta > 0) {
+        deltaHtml = '<div style="font-size:11.5px;color:#0F6B4C;font-weight:590;">' + glyph(1) + ' ' + esc(fmtInt(delta)) + ' vs ' + esc(prevYear) + '</div>';
+      } else if (isNum(delta) && delta < 0) {
+        deltaHtml = '<div style="font-size:11.5px;color:#A03027;font-weight:590;">' + glyph(-1) + ' ' + esc(fmtInt(Math.abs(delta))) + ' vs ' + esc(prevYear) + '</div>';
+      } else {
+        deltaHtml = '<div style="font-size:11.5px;color:#8E8E93;">' + glyph(0) + ' vs ' + esc(prevYear) + '</div>';
+      }
+      return '<div class="tile">' +
+        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="' + ico.stroke + '" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' + ico.path + '</svg>' +
+        '<div class="tileLab">' + esc(d.label) + '</div>' +
+        '<div class="tileNum">' + esc(isNum(d.value) ? fmtInt(d.value) : '–') + '</div>' +
+        deltaHtml +
+        '</div>';
+    }).join('');
+  }
+
+  /* =========================================================================
+     9. RENDER
+     ========================================================================= */
+
+  function $(id) { return document.getElementById(id); }
+
+  function setText(id, text) {
+    var el = $(id);
+    if (el) el.textContent = text;
+  }
+
+  function setHtml(id, html) {
+    var el = $(id);
+    if (el) el.innerHTML = html;
+  }
+
+  function setPill(id, pct) {
+    var el = $(id);
+    if (!el) return;
+    el.style.width = '';
+    el.style.height = '';
+    if (!isNum(pct)) {
+      el.className = 'pill pillFlat';
+      el.textContent = '–';
+      return;
+    }
+    var dir = pct > 0 ? 'pillUp' : (pct < 0 ? 'pillDown' : 'pillFlat');
+    el.className = 'pill ' + dir;
+    el.textContent = glyph(pct) + ' ' + fmtDec(Math.abs(pct), 2) + '%';
+  }
+
+  function render(data) {
+    if (!data || typeof data !== 'object') {
+      onError(new Error('Respons kosong dari sumber data.'));
+      return;
+    }
+    if (data.error) {
+      onError(new Error(data.error));
+      return;
+    }
+
+    var years = (data.years && data.years.length) ? data.years
+      : (data.trenPengumpulan && data.trenPengumpulan.years) || [];
+    var latest = years.length ? years[years.length - 1] : '';
+    var prev = years.length > 1 ? years[years.length - 2] : '';
+
+    // --- Header kartu (tahun mengikuti data) ---
+    setText('kpiPengumpulanLabel', 'Total Pengumpulan ' + latest);
+    setText('kpiDistribusiLabel', 'Total Distribusi ' + latest);
+    setText('trenSub', 'On-balance sheet vs off-balance sheet · ' +
+      (years.length ? years[0] + ' – ' + latest : '') + ', Rp Triliun');
+    setText('treemapSub', latest + ', Rp Triliun · luas kotak sebanding nilai');
+    setText('tilesSub', 'Jumlah lembaga ' + latest + ' & perubahan vs ' + prev);
+    setText('bubbleSub', latest + ', Rp Triliun · luas lingkaran sebanding nilai');
+
+    // --- KPI ---
+    var kpi = data.kpi || {};
+    setText('kpiPengumpulanVal', fmtRp(kpi.totalPengumpulan, 2));
+    setPill('kpiPengumpulanPill', kpi.totalPengumpulanGrowthPct);
+    setText('kpiDistribusiVal', fmtRp(kpi.totalDistribusi, 2));
+    setPill('kpiDistribusiPill', kpi.totalDistribusiGrowthPct);
+    setText('kpiRasioVal', fmtPct(kpi.rasioDistribusiPengumpulanPct, 1));
+
+    // --- Grafik ---
+    setHtml('chartTren', buildTren(data.trenPengumpulan));
+    setHtml('chartTreemap', buildTreemap(data.jenisDana2025));
+
+    var wTotal = isNum(data.bidangProgramTotal2025) ? data.bidangProgramTotal2025 : null;
+    setText('waffleSub', latest + ', Rp Triliun · 1 kotak = 1% dari ' + fmtRp(wTotal, 2));
+    setHtml('chartWaffle', buildWaffle(data.bidangProgram2025, wTotal));
+
+    setHtml('chartBubble', buildBubble(data.jenisPengelola2025));
+
+    // --- Tile ---
+    setHtml('tilesGrid', buildTiles(data.sebaranInstitusi, prev));
+  }
+
+  function onError(err) {
+    var msg = (err && (err.message || err.toString())) || 'Kesalahan tidak diketahui.';
+    var dash = $('dash'), box = $('errBox'), detail = $('errDetail');
+    if (dash) dash.style.display = 'none';
+    if (box) box.style.display = 'flex';
+    if (detail) detail.textContent = msg;
+    if (window.console && console.error) console.error('[Dashboard Zakat]', err);
+  }
+
+  /* =========================================================================
+     10. TOOLTIP — satu event delegation untuk semua elemen [data-tt] di
+         keempat chart. Posisi mengikuti kursor lewat clientX/clientY, jadi
+         tetap akurat walau .cup sedang di-scale oleh fitToWindow().
+     ========================================================================= */
+
+  (function () {
+    var tip = $('tip');
+    if (!tip) return;
+    var titleEl = tip.querySelector('b'), valEl = tip.querySelector('span');
+    var visible = false;
+
+    function findTip(el) {
+      while (el && el !== document.body && el.nodeType === 1) {
+        if (el.hasAttribute && el.hasAttribute('data-tt')) return el;
+        el = el.parentNode;
+      }
+      return null;
+    }
+
+    function place(x, y) {
+      var pad = 14, vw = window.innerWidth, vh = window.innerHeight;
+      var w = tip.offsetWidth, h = tip.offsetHeight;
+      var left = x + pad, top = y + pad;
+      if (left + w > vw - 6) left = x - w - pad;
+      if (top + h > vh - 6) top = y - h - pad;
+      if (left < 6) left = 6;
+      if (top < 6) top = 6;
+      tip.style.transform = 'translate(' + Math.round(left) + 'px,' + Math.round(top) + 'px)';
+    }
+
+    document.addEventListener('mousemove', function (e) {
+      var hit = findTip(e.target);
+      if (!hit) {
+        if (visible) { tip.classList.remove('show'); visible = false; }
+        return;
+      }
+      titleEl.textContent = hit.getAttribute('data-tt') || '';
+      var v = hit.getAttribute('data-tv');
+      if (v) { valEl.textContent = v; valEl.style.display = ''; }
+      else { valEl.style.display = 'none'; }
+      tip.classList.add('show');
+      visible = true;
+      place(e.clientX, e.clientY);
+    });
+
+    document.addEventListener('mouseleave', function () {
+      if (visible) { tip.classList.remove('show'); visible = false; }
+    });
+  })();
+
+  /* =========================================================================
+     11. PENGAMBILAN DATA
+         Halaman ini adalah salinan mandiri untuk portfolio (GitHub Pages,
+         hosting statis) — tidak berjalan di dalam Apps Script, jadi
+         google.script.run tidak tersedia di sini. Datanya diambil langsung
+         lewat fetch() cross-origin ke endpoint JSON Apps Script yang sama
+         (?format=json), yang datanya berasal dari Google Sheet sumber asli
+         dan tetap live — bukan cuplikan statis.
+     ========================================================================= */
+
+  var DATA_URL = 'https://script.google.com/macros/s/AKfycby6gRsqQvgouYCKSwsB1mpwmWA8AaxqIBDikNiuDkJQuZoASOoiE3tCeDNUMRhu5J6g/exec?format=json';
+
+  function load() {
+    if (typeof fetch !== 'function') {
+      onError(new Error('Browser ini tidak mendukung fetch().'));
+      return;
+    }
+    fetch(DATA_URL, { cache: 'no-store' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('Gagal memuat data (HTTP ' + res.status + ').');
+        return res.json();
+      })
+      .then(render)
+      .catch(onError);
+  }
+
+  var retry = $('errRetry');
+  if (retry) {
+    retry.addEventListener('click', function () {
+      window.location.reload();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', load);
+  } else {
+    load();
+  }
+
+  // Scale the fixed 1440x900 dashboard down to fit the actual browser
+  // window (minus tabs/toolbar), so it never needs a scroll — never
+  // scales up past 1 so it stays crisp on large monitors.
+  function fitToWindow() {
+    var cup = document.querySelector('.cup');
+    if (!cup) return;
+    var k = Math.min(window.innerWidth / 1440, window.innerHeight / 900, 1);
+    cup.style.transform = 'scale(' + k + ')';
+  }
+  window.addEventListener('resize', fitToWindow);
+  fitToWindow();
+})();
+</script>
+</body>
+</html>

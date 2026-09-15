@@ -25,4 +25,9 @@ Things I build for fun, mostly around agent-based modelling and economics in R.
   <div class="project-desc">An interactive walkthrough of the Solow growth model, built with R and Plotly as a teaching aid for working through the model myself.</div>
 </div>
 
+<div class="project" markdown="1">
+  <a class="project-title" href="{{ '/sandbox/dashboard-zakat.html' | relative_url }}">Dashboard Zakat Nasional</a>
+  <div class="project-desc">A live statistics dashboard for BAZNAS (Indonesia's national zakat authority), built to explore chart types beyond the usual bar/line/pie — a paired-column trend, a squarified treemap, a waffle chart, and a packed-circle bubble chart, each with hover tooltips. Numbers are fetched on load straight from a Google Sheet via a Google Apps Script backend, so this page always reflects the current source data.</div>
+</div>
+
 </section>
