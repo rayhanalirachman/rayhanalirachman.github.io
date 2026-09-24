@@ -27,12 +27,12 @@ Things I build for fun, mostly around agent-based modelling and economics in R.
 
 <div class="project" markdown="1">
   <a class="project-title" href="{{ '/sandbox/dashboard-zakat.html' | relative_url }}">Dashboard Zakat Nasional</a>
-  <div class="project-desc">A live statistics dashboard for BAZNAS (Indonesia's national zakat authority), built to explore chart types beyond the usual bar/line/pie — a paired-column trend, a squarified treemap, a waffle chart, and a packed-circle bubble chart, each with hover tooltips. Numbers are fetched on load straight from a Google Sheet via a Google Apps Script backend, so this page always reflects the current source data.</div>
+  <div class="project-desc">A live BAZNAS zakat statistics dashboard, built to explore chart types beyond bar/line/pie: paired-column trend, treemap, waffle, and bubble chart, fetched live from a Google Sheet.</div>
 </div>
 
 <div class="project" markdown="1">
   <a class="project-title" href="{{ '/sandbox/dashboard-apbd.html' | relative_url }}">APBD Realization Dashboard</a>
-  <div class="project-desc">An interactive dashboard of Indonesia's regional government budget (APBD) realization across all provinces and regencies/cities, 2015–2024 — a 3-level choropleth map (national → province → regency/city) for exploring what regional budgets are actually spent on, with a treemap of spending by function and a matrix of spending by function and type. Numbers are fetched live from the source Google Sheet via a Google Apps Script backend.</div>
+  <div class="project-desc">An interactive dashboard of Indonesia's regional government (APBD) spending, 2015&ndash;2024, with a 3-level choropleth map (national to province to regency/city) showing what budgets are spent on, fetched live from a Google Sheet.</div>
 </div>
 
 </section>
