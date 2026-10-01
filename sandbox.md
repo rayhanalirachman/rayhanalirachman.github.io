@@ -35,4 +35,9 @@ Things I build for fun, mostly around agent-based modelling and economics in R.
   <div class="project-desc">An interactive dashboard of Indonesia's regional government (APBD) spending, 2015&ndash;2024, with a 3-level choropleth map (national to province to regency/city) showing what budgets are spent on, fetched live from a Google Sheet.</div>
 </div>
 
+<div class="project" markdown="1">
+  <a class="project-title" href="https://rayhanalirachman.github.io/indonesia-scopus-journals/">Indonesia's Scopus Indexed Journals</a>
+  <div class="project-desc">A browsable wall of 310 active Scopus-indexed journals published in Indonesia, built from the SCImago 2025 ranking. Filter by subject, quartile and open access to pull matching journals out of the background and open their homepages. Data and covers on <a href="https://github.com/rayhanalirachman/indonesia-scopus-journals">GitHub</a>.</div>
+</div>
+
 </section>
