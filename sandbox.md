@@ -36,6 +36,11 @@ Things I build for fun, mostly around agent-based modelling and economics in R.
 </div>
 
 <div class="project" markdown="1">
+  <a class="project-title" href="https://rayhanalirachman.github.io/dashboard-trade-indonesia/">Dashboard Perdagangan Internasional Indonesia</a>
+  <div class="project-desc">An interactive dashboard of Indonesia's exports and imports, 2025 vs 2024, built from WITS data. Switch between Equal Earth and Mercator maps, then click a country to zoom in on its bilateral trade with animated export and import arrows. Code on <a href="https://github.com/rayhanalirachman/dashboard-trade-indonesia">GitHub</a>.</div>
+</div>
+
+<div class="project" markdown="1">
   <a class="project-title" href="https://rayhanalirachman.github.io/indonesia-scopus-journals/">Indonesia's Scopus Indexed Journals</a>
   <div class="project-desc">A browsable wall of 310 active Scopus-indexed journals published in Indonesia, built from the SCImago 2025 ranking. Filter by subject, quartile and open access to pull matching journals out of the background and open their homepages. Data and covers on <a href="https://github.com/rayhanalirachman/indonesia-scopus-journals">GitHub</a>.</div>
 </div>
